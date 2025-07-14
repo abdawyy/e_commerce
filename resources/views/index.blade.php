@@ -182,7 +182,7 @@
     <div class="container py-3">
         <div class="row align-items-center justify-content-between">
             <div class="col-12 col-md-6 text-center text-md-start">
-                <p class="mb-0">&copy; 2024 Jays's Production</p>
+                <p class="mb-0">&copy; 2024 Hayah Production</p>
             </div>
             <div class="col-12 col-md-6 pt-md-0 pt-2">
                 <div class="d-flex align-items-center gap-4 justify-content-md-end justify-content-center">
