@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                         <a class="navbar-brand" href="/"><img src={{ asset('assets/img/logo.jpg') }} alt=""
-                            style="width: 120px; height: 35.2px"></a>                    </a>
+                            style="width: 120px; height: 120px"></a>                    </a>
                 </div>
 
                 {{-- <!-- Navigation Links -->

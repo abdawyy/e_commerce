@@ -17,7 +17,7 @@
                 <img src={{ asset('assets/img/humb-menu.svg') }} style="width: 24px;" alt="">
             </button>
             <a class="navbar-brand" href="/"><img src={{ asset('assets/img/logo.jpg') }} alt=""
-                    style="width: 120px; height: 35.2px"></a>
+                    style="width: 120px; height: 120px"></a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
