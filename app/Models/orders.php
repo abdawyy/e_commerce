@@ -83,7 +83,7 @@ class orders extends Model
                 // }
 
                 // Decrement the quantity by 1
-                $productItem->decrement('quantity', $cartItem->quantity);
+                // $productItem->decrement('quantity', 1);
 
                 // Create the order item
                 orderItems::create([

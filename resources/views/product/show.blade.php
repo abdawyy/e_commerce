@@ -83,7 +83,7 @@
     <span class="fs-5 fw-bolder">Quantity:</span>
     <div class="quantity-control d-flex align-items-center gap-2">
         <button type="button" class="btn btn-outline-secondary" id="decrease-qty" onclick="changeQuantity(-1)">-</button>
-        <input type="number" class="form-control text-center" id="quantity" name="quantity" value="1" min="1">
+        <input type="number" class="form-control text-center" id="quantity" name="quantity" value="1" min="1" max="10">
         <button type="button" class="btn btn-outline-secondary" id="increase-qty" onclick="changeQuantity(1)">+</button>
     </div>
 </div>
@@ -99,10 +99,10 @@
                             @if ($productItem->quantity !== null) {{-- Skip if quantity is NULL --}}
                                 <input type="radio" class="btn-check" name="productItem_id" id="{{ $productItem->size }}"
                                     value="{{ $productItem->id }}" autocomplete="off"
-                                    @if ($productItem->quantity == 0) disabled @endif>
+                                    @if ($productItem->quantity <= 0) disabled @endif>
                                 <label class="color-checked px-3 py-1 fw-semibold pointer"
                                     for="{{ $productItem->size }}"
-                                    style="@if ($productItem->quantity == 0) opacity: 0.5; @endif">
+                                    style="@if ($productItem->quantity <= 0) opacity: 0.5; @endif">
                                     {{ $productItem->size }}
                                 </label>
                             @endif

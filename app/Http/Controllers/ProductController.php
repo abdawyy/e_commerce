@@ -96,8 +96,11 @@ class ProductController extends Controller
 public function saveProductItems($quantities,$model){
 
 
-    ProductItems::where('products_id', $model->id)->delete();
     foreach($quantities as $size =>$quantity){
+        // $productItem = ProductItems::where('products_id', $model->id)
+        // ->where('size', $size)
+        // ->get();
+
         $values =[
             'quantity'=> $quantity,
             'size'=>$size,
