@@ -11,7 +11,7 @@
             <div class="row fc-white align-content-end h-100 z-3">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-12">
-                        <h1 class="fw-bolder">JAY'S BRAND COLLECTION</h1>
+                        <h1 class="fw-bolder">Hayah BRAND COLLECTION</h1>
                     </div>
                 </div>
                 <div class="row justify-content-between align-items-center">

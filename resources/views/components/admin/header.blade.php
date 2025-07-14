@@ -18,5 +18,5 @@
     <!--  -->
     <link rel="stylesheet" href={{ asset("admin/assets/css/all.min.css")}}>
     <link rel="stylesheet" href={{ asset("admin/assets/css/style-Dashboard.css")}}>
-    <title>Jay's</title>
+    <title>Hayah</title>
 </head>

@@ -1,5 +1,5 @@
 <header id="header" class="bg-black">
-    <p class="text-center fc-white py-2 mb-0">Jay's.</p>
+    <p class="text-center fc-white py-2 mb-0">Hayah.</p>
 </header>
 
 <head>

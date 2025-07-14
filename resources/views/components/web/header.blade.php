@@ -13,5 +13,5 @@
     <!--  -->
     <link rel="stylesheet" href={{ asset("assets/css/all.min.css") }}>
     <link rel="stylesheet" href={{ asset("assets/css/style.css") }}>
-    <title>Jay's</title>
+    <title>Hayah</title>
 </head>
