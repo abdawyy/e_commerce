@@ -5,7 +5,7 @@
                 <img src="/assets/img/humb-menu.svg" style="width: 24px;" alt="">
             </button>
             <a class="navbar-brand" href="/"><img src="/assets/img/logo.jpg" alt=""
-                    style="width: 120px;"></a>
+                 style="width: 120px; height: 35.2px"></a>
             <!-- <ul class="d-flex gap-3 px-3 me-auto mb-2 mb-lg-0" style="list-style: none;">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="../index.html">Home</a>
@@ -30,7 +30,7 @@
 </nav>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-        <a class="navbar-brand" href="index.html"><img src="assets/img/logo.jpg" alt="" style="width: 120px;"></a>
+        <a class="navbar-brand" href="index.html"><img src="assets/img/logo.jpg" alt="" style="width: 120px; height: 35.2px"></a>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
