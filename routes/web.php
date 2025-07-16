@@ -23,6 +23,16 @@ use App\Http\Controllers\CitiesController;
 |
 */
 
+
+Route::get('/lang/{lang}', function ($lang) {
+    if (!in_array($lang, ['en', 'ar'])) {
+        $lang = 'en'; // default fallback
+    }
+    session()->put('locale', $lang);
+    app()->setLocale($lang);
+    return redirect()->back();
+})->name('lang.switch');
+
 Route::get('/', function () {
     return view('index');
 });
