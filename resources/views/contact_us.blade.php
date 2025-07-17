@@ -102,10 +102,7 @@
     <h1>{{ __('web.title_contact') }}</h1>
 
     <div class="contact-info">
-        <p>{{ __('web.email') }}:
-            <a href="mailto:hayah.homewear@example.com">hayah.homewear@example.com</a></p>
-        <p>{{ __('web.phone') }}:
-            <a href="tel:+201234567890">+20 123 456 7890</a></p>
+ 
         <p>{{ __('web.location') }}: Cairo, Egypt</p>
     </div>
 

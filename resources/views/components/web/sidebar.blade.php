@@ -1,6 +1,6 @@
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-        <a class="navbar-brand" href="{{ url('/lang/' . app()->getLocale()) }}">
+        <a class="navbar-brand" href="/">
             <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah Logo" style="width: 160px; height: 80px">
         </a>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -10,7 +10,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {{-- Home --}}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/lang/' . app()->getLocale()) }}">
+                <a class="nav-link" href="/">
                     {{ __('web.home') }}
                 </a>
             </li>
@@ -25,7 +25,7 @@
                     @foreach($categories as $category)
                         <li>
                             <a class="dropdown-item"
-                               href="{{ url('/lang/' . app()->getLocale() . '/product/list/category/' . $category->id) }}">
+                               href="{{ url( '/product/list/category/' . $category->id) }}">
                                 {{ $category->name }}
                             </a>
                         </li>

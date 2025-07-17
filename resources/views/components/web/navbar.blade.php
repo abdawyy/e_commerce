@@ -57,7 +57,7 @@
     {{-- Navigation --}}
     <nav class="navbar navbar-expand-lg py-3 bg-white" style="position: sticky; top: 0; z-index: 999;">
         <div class="container">
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex justify-content-center  gap-2  gap-mobile-12em">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="border: none;">
                     <img src="{{ asset('assets/img/humb-menu.svg') }}" style="width: 24px;" alt="">
@@ -89,7 +89,7 @@
             </div>
 
             {{-- Right Side Icons --}}
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-md-4 gap-mobile-4_4em">
                 <a href="{{ route('cart.index') }}">
                     <div class="position-relative">
                         <img src="{{ asset('assets/img/cart.svg') }}" style="width: 22px;" alt="">
@@ -196,3 +196,24 @@
 </body>
 
 </html>
+<style>
+    @media (max-width: 767.98px) {
+        .gap-mobile-12em {
+            gap: 12.5em !important;
+        }
+
+        .gap-mobile-4_4em {
+            gap: 4.4em !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .gap-desktop-2 {
+            gap: 0.5rem !important; /* Bootstrap gap-2 = 0.5rem */
+        }
+
+        .gap-desktop-3 {
+            gap: 1rem !important; /* Bootstrap gap-3 = 1rem */
+        }
+    }
+</style>
