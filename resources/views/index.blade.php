@@ -137,8 +137,15 @@
             </div>
             <div class="col-12 col-md-6 pt-md-0 pt-2">
                 <div class="d-flex align-items-center gap-4 justify-content-md-end justify-content-center">
-                    <a href="#" class="text-light">{{ __('web.terms') }}</a>
-                    <a href="#" class="text-light">{{ __('web.privacy') }}</a>
+<!-- Social Media Icons -->
+<a href="https://www.instagram.com/hayah.homewear?igsh=MW1mYjI5MzVhM3dmdg%3D%3D&utm_source=qr" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="30" height="30">
+</a>
+
+<a href="https://www.facebook.com/share/15RqUysyS2/?mibextid=wwXIfr" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook" width="30" height="30">
+</a>
+
                     <a href="#" class="text-light">{{ __('web.cookies') }}</a>
                 </div>
             </div>

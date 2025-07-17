@@ -1,3 +1,5 @@
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,3 +22,19 @@
     <link rel="stylesheet" href={{ asset("admin/assets/css/style-Dashboard.css")}}>
     <title>Hayah</title>
 </head>
+<style>
+    [dir="rtl"] .sidebar {
+        right: 0;
+        left: auto;
+    }
+
+    [dir="rtl"] #main {
+        margin-right: 300px; /* same as sidebar width */
+        margin-left: 0;
+    }
+
+    [dir="ltr"] #main {
+        margin-left: 300px;
+        margin-right: 0;
+    }
+</style>

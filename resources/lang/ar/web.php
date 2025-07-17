@@ -23,7 +23,7 @@ return [
     'top' => 'أعلى',
     'tshirt' => 'تي شيرت',
     'see_details' => 'عرض التفاصيل',
-    'footer_rights' => '&copy; 2024 جميع الحقوق محفوظة لحياة',
+    'footer_rights' => '&copy; 2025 جميع الحقوق محفوظة لحياة',
     'terms' => 'الشروط',
     'privacy' => 'سياسة الخصوصية',
     'cookies' => 'سياسة الكوكيز',
@@ -35,5 +35,13 @@ return [
     'size' => 'المقاس',
     'what_size' => 'ما هو مقاسي؟',
     'add_to_cart' => 'أضف إلى السلة',
+        'title_contact' => 'اتصل بنا',
+    'email' => 'البريد الإلكتروني',
+    'phone' => 'رقم الهاتف',
+    'location' => 'الموقع',
+    'name_placeholder' => 'اسمك',
+    'email_placeholder' => 'بريدك الإلكتروني',
+    'message_placeholder' => 'رسالتك...',
+    'send_button' => 'إرسال الرسالة',
 
 ];

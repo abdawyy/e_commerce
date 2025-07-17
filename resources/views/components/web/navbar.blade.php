@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+
 <head>
     <!-- Charset & Viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -44,8 +45,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=El+Messiri:wght@400;700&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=El+Messiri:wght@400;700&display=swap">
 </head>
+
 <body>
 
     <header id="header" class="bg-black">
@@ -56,12 +58,12 @@
     <nav class="navbar navbar-expand-lg py-3 bg-white" style="position: sticky; top: 0; z-index: 999;">
         <div class="container">
             <div class="d-flex align-items-center gap-2">
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
-                        aria-controls="offcanvasExample" style="border: none;">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="border: none;">
                     <img src="{{ asset('assets/img/humb-menu.svg') }}" style="width: 24px;" alt="">
                 </button>
                 <a class="navbar-brand" href="/">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah Logo" style="width: 120px; height: 30px">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah Logo" style="width: 160px; height: 80px">
                 </a>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -73,9 +75,12 @@
                                 {{ __('web.category') }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('product.List') }}">{{ __('web.all_products') }}</a></li>
+                                <li><a class="dropdown-item"
+                                        href="{{ route('product.List') }}">{{ __('web.all_products') }}</a></li>
                                 @foreach ($categories as $category)
-                                    <li><a class="dropdown-item" href="{{ route('product.List', ['id' => $category->id]) }}">{{ $category->name }}</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('product.List', ['id' => $category->id]) }}">{{ $category->name }}</a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </li>
@@ -88,7 +93,8 @@
                 <a href="{{ route('cart.index') }}">
                     <div class="position-relative">
                         <img src="{{ asset('assets/img/cart.svg') }}" style="width: 22px;" alt="">
-                        <span class="position-absolute top-100 start-100 translate-middle badge-cart rounded-pill cart-Notify">
+                        <span
+                            class="position-absolute top-100 start-100 translate-middle badge-cart rounded-pill cart-Notify">
                             {{ $cartCount > 9 ? '+9' : $cartCount }}
                         </span>
                     </div>
@@ -104,8 +110,11 @@
 
                 {{-- Language Switcher --}}
                 <div>
-                    <a class="text-black" href="{{ url('/lang/en') }}">EN</a> |
-                    <a class="text-black" href="{{ url('/lang/ar') }}">العربية</a>
+                    <a class="text-decoration-none me-2 {{ app()->getLocale() == 'en' ? 'fw-bold text-primary' : 'text-black' }}"
+                        href="{{ url('/lang/en') }}">EN</a>
+                    |
+                    <a class="text-decoration-none ms-2 {{ app()->getLocale() == 'ar' ? 'fw-bold text-primary' : 'text-black' }}"
+                        href="{{ url('/lang/ar') }}">العربية</a>
                 </div>
             </div>
         </div>
@@ -119,7 +128,8 @@
 
             <form method="POST" action="{{ route('product.List') }}">
                 @csrf
-                <input type="text" id="searchInput" name="search" placeholder="{{ __('web.search_placeholder') }}" required>
+                <input type="text" id="searchInput" name="search" placeholder="{{ __('web.search_placeholder') }}"
+                    required>
                 <button class="btn btn-primary" type="submit">{{ __('web.search') }}</button>
             </form>
         </div>
@@ -127,13 +137,49 @@
 
     {{-- Popup Styles --}}
     <style>
-        .popup { position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; }
-        .popup-content { background: white; padding: 20px; border-radius: 10px; width: 80%; max-width: 500px; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
-        .close-btn { color: #aaa; font-size: 24px; float: right; font-weight: bold; cursor: pointer; }
-        .close-btn:hover { color: black; }
+        .popup {
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn {
+            color: #aaa;
+            font-size: 24px;
+            float: right;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: black;
+        }
+
         @media (max-width: 600px) {
-            .popup-content { width: 90%; padding: 15px; }
-            .close-btn { font-size: 20px; }
+            .popup-content {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .close-btn {
+                font-size: 20px;
+            }
         }
     </style>
 
@@ -148,4 +194,5 @@
     </script>
 
 </body>
+
 </html>
