@@ -19,7 +19,7 @@
                         <p>{{ __('web.brand_collection_desc') }}</p>
                     </div>
                     <div class="col-12 col-lg-5 text-lg-end text-start">
-                        <a href="{{ url('/lang/' . app()->getLocale() . '/product/list/category') }}"
+                        <a href="{{('/product/list/category') }}"
                            class="btn-custom px-5 py-2 fw-bolder">{{ __('web.discover') }}</a>
                     </div>
                 </div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-4">
-            <a href="{{ url('/lang/' . app()->getLocale() . '/product/list/category') }}">
+            <a href="{{ url( '/product/list/category') }}">
                 <button class="btn-custom-dark px-5 py-2 d-flex align-items-center gap-2">
                     {{ __('web.show_all') }} <i class="fa-solid fa-arrow-right"></i>
                 </button>
@@ -106,7 +106,7 @@
                     <div class="row align-content-end h-100">
                         <h5 class="fw-bolder fc-white fs-1">{{ __('web.top') }}</h5>
                         <div class="d-flex">
-                            <a href="{{ route('product.List') }}">
+                            <a href="product/list/category/1">
                                 <button class="btn-custom px-5 py-2 fw-bolder">{{ __('web.see_details') }}</button>
                             </a>
                         </div>
@@ -116,9 +116,9 @@
             <div class="col-10 col-lg-4 col-md-6 pb-3">
                 <div class="t-shirt p-3">
                     <div class="row align-content-end h-100">
-                        <h5 class="fw-bolder fc-white fs-1">{{ __('web.tshirt') }}</h5>
+                        <h5 class="fw-bolder fc-white fs-1">{{ __('web.Long Sleeve') }}</h5>
                         <div class="d-flex">
-                            <a href="{{ route('product.List') }}">
+                            <a href="product/list/category/5">
                                 <button class="btn-custom px-5 py-2 fw-bolder">{{ __('web.see_details') }}</button>
                             </a>
                         </div>

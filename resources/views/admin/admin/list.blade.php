@@ -29,7 +29,7 @@
 
             <!-- Pagination links -->
             <div class="mt-4">
-                {{ $admins->links() }}
+{{ $admins->links('vendor.pagination.bootstrap-5') }}
             </div>
         </div>
     </div>

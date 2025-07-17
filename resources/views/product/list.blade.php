@@ -15,7 +15,7 @@ svg{
         <div class="row">
             <!-- Filter Sidebar (desktop) -->
             <aside class="col-lg-3 d-none d-lg-block">
-                <div class="card card-aside position-sticky" style="top: 100px;">
+                <div class="card card-aside position-sticky" style="top: 130px;">
                     <div class="card-body">
                         <h5 class="d-flex justify-content-between align-items-center">
                             {{ __('web.filter') }}
@@ -97,7 +97,7 @@ svg{
 
                 <!-- Pagination -->
                 <div class="d-flex justify-content-end mt-4">
-                    {{ $data->links() }}
+{{ $data->links('vendor.pagination.bootstrap-5') }}
                 </div>
             </main>
         </div>

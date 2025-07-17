@@ -20,7 +20,7 @@ return [
     'new_collection' => 'المجموعة الجديدة',
     'new_collection_desc' => 'ارفع مستوى أناقتك مع مجموعتنا الجديدة من تصميم حياة.',
     'show_all' => 'عرض الكل',
-    'top' => 'أعلى',
+    'top' => 'توب',
     'tshirt' => 'تي شيرت',
     'see_details' => 'عرض التفاصيل',
     'footer_rights' => '&copy; 2025 جميع الحقوق محفوظة لحياة',
@@ -43,5 +43,7 @@ return [
     'email_placeholder' => 'بريدك الإلكتروني',
     'message_placeholder' => 'رسالتك...',
     'send_button' => 'إرسال الرسالة',
+        'Long Sleeve' => 'أكمام طويلة ',
+
 
 ];

@@ -38,4 +38,6 @@ return [
     'email_placeholder' => 'Your Email',
     'message_placeholder' => 'Your Message...',
     'send_button' => 'Send Message',
+        'Long Sleeve' => ' Long Sleeve',
+
 ];

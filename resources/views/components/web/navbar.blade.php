@@ -56,14 +56,14 @@
 
     {{-- Navigation --}}
     <nav class="navbar navbar-expand-lg py-3 bg-white" style="position: sticky; top: 0; z-index: 999;">
-        <div class="container">
+        <div class="container ">
             <div class="d-flex justify-content-center  gap-2  gap-mobile-12em">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="border: none;">
                     <img src="{{ asset('assets/img/humb-menu.svg') }}" style="width: 24px;" alt="">
                 </button>
                 <a class="navbar-brand" href="/">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah Logo" style="width: 160px; height: 80px">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah Logo" style="width: 120px; height: 80px">
                 </a>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -201,10 +201,14 @@
         .gap-mobile-12em {
             gap: 12.5em !important;
         }
+        .navbar-brand{
+            margin: 10px !important;
+        }
 
         .gap-mobile-4_4em {
-            gap: 4.4em !important;
+            gap: 3.8em !important;
         }
+  
     }
 
     @media (min-width: 768px) {

@@ -35,7 +35,7 @@
 
           <div>
   <div class="mt-4">
-                {{ $data->links() }}
+{{ $data->links('vendor.pagination.bootstrap-5') }}
             </div>
             <x-web.footer />
       

@@ -75,12 +75,12 @@
 
                 <!-- Size -->
                 <div class="d-flex gap-2 flex-column pt-3">
-                    <div class="d-flex align-items-center justify-content-between">
+                    {{-- <div class="d-flex align-items-center justify-content-between">
                         <span class="fs-5 fw-bolder">{{ __('web.size') }}:</span>
                         <span class="fs-6 fw-normal pointer" data-bs-toggle="modal" data-bs-target="#sizeModal" style="text-decoration: underline;">
                             {{ __('web.what_size') }}
                         </span>
-                    </div>
+                    </div> --}}
                     <div class="d-flex align-items-center gap-2 warp">
                         @foreach ($product->productItems as $productItem)
                             @if ($productItem->quantity !== null)
