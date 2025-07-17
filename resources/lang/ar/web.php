@@ -26,7 +26,7 @@ return [
     'footer_rights' => '&copy; 2025 جميع الحقوق محفوظة لحياة',
     'terms' => 'الشروط',
     'privacy' => 'سياسة الخصوصية',
-    'cookies' => 'سياسة الكوكيز',
+    'cookies' => 'تواصل معنا',
     'filter' => 'فلتر',
         'in_stock' => 'متوفر',
     'out_of_stock' => 'غير متوفر',

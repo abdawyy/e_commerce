@@ -21,7 +21,7 @@ return [
     'footer_rights' => '&copy; 2025 Hayah Production',
     'terms' => 'Terms',
     'privacy' => 'Privacy Policy',
-    'cookies' => 'Cookie Policy',
+    'cookies' => 'Contact Us',
     'filter' => 'Filter',
         'in_stock' => 'In Stock',
     'out_of_stock' => 'Out of Stock',

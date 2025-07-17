@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $categories = Category::all();
             $types = Type::all();
-$products = Products::with('productImages', 'productItems', 'orderItems', 'category', 'type')->paginate(10);
+$products = Products::with('productImages', 'productItems', 'orderItems', 'category', 'type')->get();
             $cartCount = 0;
 
             // Check if the user is authenticated and retrieve cart data
