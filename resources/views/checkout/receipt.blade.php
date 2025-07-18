@@ -18,7 +18,7 @@
         <p>{{ __('confirmation.order_id') }} <strong>#{{ $orderID }}</strong></p>
         <p>{{ __('confirmation.delivery_fees') }} <strong>{{ $deleveryFees }} LE</strong></p>
         <p>{{ __('confirmation.total_price') }} <strong>{{ $totalPrice }} LE</strong></p>
-        <a href="{{ route('home') }}" class="btn btn-primary mt-3">{{ __('confirmation.back_home') }}</a>
+        <a href="/" class="btn btn-primary mt-3">{{ __('confirmation.back_home') }}</a>
     </div>
 </div>
 

@@ -146,7 +146,7 @@ class CheckoutController extends Controller
         // Send Email with the invoice PDF path
         Mail::to($order->user->email)->send(new OrderConfirmationMail($order, $pdfPath));
 
-        $adminEmail = 'jaysbasicc@gmail.com'; // Replace with the admin's email
+        $adminEmail = 'hayahfashion18@gmail.com'; // Replace with the admin's email
         Mail::to($adminEmail)->send(new AdminOrderNotificationMail($order, $pdfPath));
 
 

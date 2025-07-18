@@ -17,7 +17,7 @@
 
         <!-- Styles -->
         @livewireStyles
-                    <link rel="stylesheet" href="https://jaysbasic.site/public/build/assets/app-B6b7m2dX.css">
+                    <link rel="stylesheet" href="https://hayahfashion.net/public/build/assets/app-B6b7m2dX.css">
 
     </head>
     <body>
@@ -27,6 +27,6 @@
 
         @livewireScripts
     </body>
-    <script src="https://jaysbasic.site/public/build/assets/app-z-Rg4TxU.js"></script>
+    <script src="https://hayahfashion.net/public/build/assets/app-z-Rg4TxU.js"></script>
 
 </html>

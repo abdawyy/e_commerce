@@ -10,7 +10,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-            <link rel="stylesheet" href="https://jaysbasic.site/public/build/assets/app-B6b7m2dX.css">
+            <link rel="stylesheet" href="https://hayahfashion.net/public/build/assets/app-B6b7m2dX.css">
 
 
         <!-- Scripts -->
