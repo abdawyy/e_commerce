@@ -40,6 +40,9 @@
         height: 5px !important;
 
     }
+      .btn-primary {
+                    display: none;
+                }
 </style>
 
 <x-web.footer />
