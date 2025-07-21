@@ -28,14 +28,14 @@ return [
     'privacy' => 'سياسة الخصوصية',
     'cookies' => 'تواصل معنا',
     'filter' => 'فلتر',
-        'in_stock' => 'متوفر',
+    'in_stock' => 'متوفر',
     'out_of_stock' => 'غير متوفر',
     'color' => 'اللون',
     'quantity' => 'الكمية',
     'size' => 'المقاس',
     'what_size' => 'ما هو مقاسي؟',
     'add_to_cart' => 'أضف إلى السلة',
-        'title_contact' => 'اتصل بنا',
+    'title_contact' => 'اتصل بنا',
     'email' => 'البريد الإلكتروني',
     'phone' => 'رقم الهاتف',
     'location' => 'الموقع',
@@ -43,7 +43,17 @@ return [
     'email_placeholder' => 'بريدك الإلكتروني',
     'message_placeholder' => 'رسالتك...',
     'send_button' => 'إرسال الرسالة',
-        'Long Sleeve' => 'أكمام طويلة ',
+    'Long Sleeve' => 'أكمام طويلة ',
+    'confirm_title' => 'تأكيد التسجيل',
+    'confirm_message' => 'يرجى الموافقة على <a href="/legal" target="_blank" class="text-blue-600 underline hover:text-blue-800">الشروط</a> و<a href="/legal" target="_blank" class="text-blue-600 underline hover:text-blue-800">سياسة الخصوصية</a> قبل المتابعة.',
+    'confirm_agree' => 'أوافق على :terms و :privacy.',
+    'terms_title' => 'الشروط والأحكام',
+    'privacy_title' => 'سياسة الخصوصية',
+    'msg_privacy' => 'هنا يمكنك وضع محتوى سياسة الخصوصية الخاصة بك باللغة العربية.',
+    'msg_terms' => 'هنا يمكنك وضع محتوى الشروط والأحكام الخاصة بك باللغة العربية.',
+        'message_sent_successfully' => 'تم إرسال رسالتك بنجاح.',
+
+
 
 
 ];

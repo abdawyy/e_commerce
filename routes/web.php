@@ -23,6 +23,9 @@ use App\Http\Controllers\CitiesController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/legal', function () {
+    return view('legal');
+})->name('legal');
 
 
 Route::get('/lang/{lang}', function ($lang) {
@@ -45,6 +48,8 @@ Route::match(['get', 'post'], 'product/list/category/{id?}', [ProductController:
 
 Route::get('admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [AdminController::class, 'login']);
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
+
 
 
 // Protect admin dashboard and other routes

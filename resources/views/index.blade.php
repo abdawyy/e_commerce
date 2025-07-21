@@ -147,6 +147,8 @@
 </a>
 
                     <a href="/contact" class="text-light">{{ __('web.cookies') }}</a>
+                    <a href="/legal" class="text-light">{{ __('web.privacy_title') }}</a>
+
                 </div>
             </div>
         </div>
