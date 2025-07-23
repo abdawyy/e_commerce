@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         
 
-        <title>{{ config('app.name', 'Hayah') }}</title>
+    <title>{{ __('web.title') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

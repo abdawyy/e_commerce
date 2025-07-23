@@ -37,7 +37,7 @@
     <link rel="alternate" hreflang="en" href="{{ url()->current() }}?lang=en">
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    {{-- <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon"> --}}
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
