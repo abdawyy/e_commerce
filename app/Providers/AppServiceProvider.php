@@ -57,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
                 // Count items in the shopping cart for the authenticated user
                 $cartCount = ShoppingCart::where('user_id', $userId)->count();
             }
-            $cities = Cities::all();
+$cities = Cities::where('is_active', 1)->get();
 
 
             // Share the cart count with all views
