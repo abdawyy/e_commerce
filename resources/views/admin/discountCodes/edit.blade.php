@@ -82,4 +82,4 @@
     </div>
 </main>
 
-<x-web.footer />
+<x-admin.footer />

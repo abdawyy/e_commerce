@@ -13,10 +13,12 @@ class admin extends Authenticatable
     use Apptraits;
     use HasFactory;
     protected $fillable = [
-       'username',
-       'password',
-       'email',
-       'created_at'
+        'username',
+        'password',
+        'email',
+        'created_at',
+        'is_active'
+
 
 
 

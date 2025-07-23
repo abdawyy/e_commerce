@@ -69,6 +69,7 @@ class CitiesController extends Controller
                 'Name' => $data->name,
                 'Price' => $data->price,
                 'Created At' => $data->created_at->format('m/d/Y'),
+                'is_active'=>$data->is_active
             ];
         });
 
@@ -90,5 +91,12 @@ class CitiesController extends Controller
             // Failure flash message
             return redirect()->back()->with('error', 'Failed to delete the record. Record may not exist.');
         }
+    }
+       public function toggleUserStatus($id)
+    {
+        $city = Cities::findOrFail($id);
+
+        self::toggleStatus($city); // now using self
+        return back()->with('success', 'Status toggled');
     }
 }

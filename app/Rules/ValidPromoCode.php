@@ -15,30 +15,29 @@ class ValidPromoCode implements Rule
         // Step 1: Retrieve authenticated user ID
         $userId = Auth::id();
 
-        // Step 2: Check if the promo code exists and is not expired
+        // Step 2: Check if the promo code exists, is active, and not expired
         $promoCode = discountCodes::where('code', $value)
-                                 ->where('expiry_date', '>', now()) // Check if it's not expired
-                                 ->first();
+                                  ->where('is_active', 1)              // Promo must be active
+                                  ->where('expiry_date', '>', now())   // Promo must not be expired
+                                  ->first();
 
-        // If promo code doesn't exist or is expired, fail validation
         if (!$promoCode) {
-            return false; // Invalid or expired promo code
+            return false; // Invalid, inactive, or expired promo code
         }
 
         // Step 3: Check if the user has an order
         $hasOrder = orders::where('user_id', $userId)->exists();
 
-        // Step 4: If the user has an order and the promo code is invalid, fail validation
-        if ($hasOrder && !$promoCode) {
-            return false; // Promo code not valid for the user with an order
+        // Optional logic: If you want to disallow using a promo if user already has an order
+        if ($hasOrder) {
+            return false; // User already has an order — not eligible
         }
 
-        // If all checks pass, return true
-        return true;
+        return true; // All conditions passed
     }
 
     public function message()
     {
-        return 'The provided promo code is either invalid, expired, or not valid for your order.';
+        return 'The provided promo code is either invalid, expired, inactive, or not valid for your order.';
     }
 }

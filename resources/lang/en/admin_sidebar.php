@@ -22,14 +22,16 @@ return [
     'view_types' => 'View all Types',
     'add_type' => 'Add Type',
 
- 
+
 
     'pages' => 'Pages',
     'order_list' => 'Order List',
     'user_list' => 'User List',
     'logout' => 'Logout',
 
-        'discount_codes' => 'Discount Codes',
+    'discount_codes' => 'Discount Codes',
     'view_discount_codes' => 'View all Discount Codes',
     'add_discount_code' => 'Add Discount Code', // ✅ This is the one you asked for
+    'messages_list' => 'Messages List',
+
 ];

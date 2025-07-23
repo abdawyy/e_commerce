@@ -13,6 +13,9 @@
                 {{ session('status') }}
             </div>
         @endif
+            <div class="mb-4 font-medium text-sm text-red-600">
+        <x-alert-error />
+            </div>
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -20,23 +23,15 @@
             <!-- Email Address -->
             <div>
                 <x-label for="email">{{ __('auth.email') }}</x-label>
-                <x-input id="email" class="block mt-1 w-full"
-                         type="email"
-                         name="email"
-                         :value="old('email')"
-                         required
-                         autofocus
-                         autocomplete="username" />
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
+                    autofocus autocomplete="username" />
             </div>
 
             <!-- Password -->
             <div class="mt-4">
                 <x-label for="password">{{ __('auth.password') }}</x-label>
-                <x-input id="password" class="block mt-1 w-full"
-                         type="password"
-                         name="password"
-                         required
-                         autocomplete="current-password" />
+                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
+                    autocomplete="current-password" />
             </div>
 
             <!-- Remember Me -->
@@ -50,8 +45,7 @@
             <!-- Submit Button and Links -->
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                       href="{{ route('password.request') }}">
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('auth.forgot_password') }}
                     </a>
                 @endif
@@ -60,7 +54,7 @@
                     {{ __('auth.login') }}
                 </x-button>
 
-                <a href="{{ url( '/register') }}" class="ms-4 text-sm text-blue-600 hover:underline">
+                <a href="{{ url('/register') }}" class="ms-4 text-sm text-blue-600 hover:underline">
                     {{ __('auth.register') }}
                 </a>
             </div>

@@ -182,4 +182,13 @@ protected function deleteImageFromStorage($imagePath)
         // Replace the original quantities in the request
         $request->merge(['quantities' => $quantities]);
     }
+      public function toggleStatus($model, string $booleanField = 'is_active'): bool
+    {
+        if (!isset($model->{$booleanField})) {
+            return false; // or throw exception if preferred
+        }
+
+        $model->{$booleanField} = !$model->{$booleanField};
+        return $model->save();
+    }
 }

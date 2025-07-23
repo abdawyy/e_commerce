@@ -9,11 +9,12 @@ use App\Models\discountCodes;
 class discountCodesController extends Controller
 {
     use Apptraits;
-    public $model='App\Models\discountCodes';
-    public $url='/admin/discountCodes';
-    public function edit( Request $request,$id = null){
-  // Retrieve the model instance to update
-  $model = $this->model::find($id);
+    public $model = 'App\Models\discountCodes';
+    public $url = '/admin/discountCodes';
+    public function edit(Request $request, $id = null)
+    {
+        // Retrieve the model instance to update
+        $model = $this->model::find($id);
 
         if ($request->isMethod('post')) {
             $request->validate([
@@ -22,28 +23,28 @@ class discountCodesController extends Controller
                 'expiry_date' => 'required|date|after:today', // Validates expiry_date as a date and it must be a future date
             ]);
 
-        $attributes=[
-            'id'=>$id
-        ];
-        $values=[
-            'code'=>$request->code,
-            'discount_percentage'=>$request->discount_percentage,
-            'expiry_date'=>$request->expiry_date,
+            $attributes = [
+                'id' => $id
+            ];
+            $values = [
+                'code' => $request->code,
+                'discount_percentage' => $request->discount_percentage,
+                'expiry_date' => $request->expiry_date,
 
-        ];
-        $model = self::updateOrCreate($this->model,$attributes,$values);
+            ];
+            $model = self::updateOrCreate($this->model, $attributes, $values);
 
-        if($model){
-            return redirect()->route('discountCodes.list')->with('success', 'your Discount Code has been successful saved.');
+            if ($model) {
+                return redirect()->route('discountCodes.list')->with('success', 'your Discount Code has been successful saved.');
 
-        }else{
-            return redirect()->route('discountCodes.list')->with('error', 'cannot be saved saved.');
+            } else {
+                return redirect()->route('discountCodes.list')->with('error', 'cannot be saved saved.');
 
+            }
+            // Optionally return a view with the model data for editing
         }
-         // Optionally return a view with the model data for editing
-    }
 
-    return view('admin.discountCodes.edit', compact('model'));
+        return view('admin.discountCodes.edit', compact('model'));
 
 
     }
@@ -55,7 +56,7 @@ class discountCodesController extends Controller
 
         // Define the mapping of headers to fields
         $headerMap = [
-            'ID'=>'id',
+            'ID' => 'id',
             'Code' => 'code',
             'Discount Percentage' => 'discount_percentage',
             'Expiry Date' => 'expiry_date',
@@ -65,23 +66,25 @@ class discountCodesController extends Controller
         $data = discountCodes::search($search, $headerMap)->paginate(10);
 
         // Define the headers for the table
-        $headers = ['ID', 'Code', 'Discount Percentage','Expiry Date','Action'];
+        $headers = ['ID', 'Code', 'Discount Percentage', 'Expiry Date', 'Action'];
 
         // Prepare the rows by mapping through the types collection
-        $rows =  $data->map(function ($data) {
+        $rows = $data->map(function ($data) {
             return [
                 'ID' => $data->id,
                 'Code' => $data->code,
-                'Discount Percentage'=>$data->discount_percentage . ' %',
-                'Expiry Date'=>$data->expiry_date,
+                'Discount Percentage' => $data->discount_percentage . ' %',
+                'Expiry Date' => $data->expiry_date,
                 'Created At' => $data->created_at->format('m/d/Y'),
+                'is_active' => $data->is_active
+
             ];
         });
 
-        $url=$this->url;
+        $url = $this->url;
 
         // Return the view with headers and rows data
-        return view('admin.discountCodes.list', compact('headers', 'rows', 'data', 'search','url'));
+        return view('admin.discountCodes.list', compact('headers', 'rows', 'data', 'search', 'url'));
     }
     public function delete($id)
     {
@@ -96,5 +99,12 @@ class discountCodesController extends Controller
             // Failure flash message
             return redirect()->back()->with('error', 'Failed to delete the record. Record may not exist.');
         }
+    }
+    public function toggleUserStatus($id)
+    {
+        $discount_codes = discountCodes::findOrFail($id);
+
+        self::toggleStatus($discount_codes); // now using self
+        return back()->with('success', 'Status toggled');
     }
 }

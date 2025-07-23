@@ -8,32 +8,32 @@
             @php $isRtl = app()->getLocale() === 'ar'; @endphp
 
             <div class="pagetitle">
-                <h1>{{ __('types.title') }}</h1>
+                <h1>{{ __('discount_codes.title') }}</h1>
                 <nav>
                     <ol class="breadcrumb d-flex {{ $isRtl ? 'text-end' : 'text-start' }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
                         <li class="breadcrumb-item">
-                            <a href="#">{{ __('types.breadcrumb_main') }}</a>
+                            <a href="#">{{ __('discount_codes.breadcrumb_main') }}</a>
                         </li>
                         <li class="mx-2">-</li>
                         <li class="breadcrumb-item active">
-                            {{ __('types.breadcrumb_active') }}
+                            {{ __('discount_codes.breadcrumb_active') }}
                         </li>
                     </ol>
                 </nav>
             </div>
 
-            <!-- Data Table -->
+            <!-- Data Table for discount_codes -->
             <x-data-table :headers="$headers" :rows="$rows" :url="$url" />
         </div>
 
         <!-- Pagination links -->
         <div class="mt-4">
-{{ $data->links('vendor.pagination.bootstrap-5') }}
+            {{ $data->links('vendor.pagination.bootstrap-5') }}
         </div>
     </div>
 </main>
 
-<x-web.footer />
+<x-admin.footer />
 
 <style>
     .btn-danger {

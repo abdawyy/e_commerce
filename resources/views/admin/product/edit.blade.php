@@ -12,16 +12,29 @@
             <div class="pagetitle">
                 <h1>{{ __('products.title') }}</h1>
                 <nav>
-                    <ol class="breadcrumb d-flex {{ $isRtl ? 'text-end' : 'text-start' }}"
+                    <ol class="breadcrumb d-flex align-items-center justify-content-between flex-wrap {{ $isRtl ? 'text-end' : 'text-start' }}"
                         dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
-                        <li class="breadcrumb-item">
-                            <a href="#">{{ __('products.breadcrumb_main') }}</a>
-                        </li>
-                        <li class="mx-2">-</li>
-                        <li class="breadcrumb-item active">
-                            {{ __('products.breadcrumb_active') }}
-                        </li>
+
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <li class="breadcrumb-item">
+                                <a href="#">{{ __('products.breadcrumb_main') }}</a>
+                            </li>
+                            <li class="breadcrumb-separator">-</li>
+                            <li class="breadcrumb-item active">
+                                {{ __('products.breadcrumb_active') }}
+                            </li>
+                        </div>
+
+                        @if (optional($model)->id)
+                            <div class="ms-auto">
+                                <a href="{{ url('admin/reviews/' . $model->id) }}" class="btn btn-warning btn-sm">
+                                    {{ __('products.reviews_button') }}
+                                </a>
+                            </div>
+                        @endif
+
                     </ol>
+
                 </nav>
             </div>
 
@@ -83,10 +96,12 @@
                                             <select name="category_id"
                                                 class="form-select @error('category_id') is-invalid @enderror">
                                                 <option disabled {{ !$model || !$model->category ? 'selected' : '' }}>
-                                                    {{ __('products.choose') }}</option>
+                                                    {{ __('products.choose') }}
+                                                </option>
                                                 @foreach($categories as $category)
                                                     <option value="{{ $category->id }}" {{ $model && $model->category_id === $category->id ? 'selected' : '' }}>
-                                                        {{ $category->name }}</option>
+                                                        {{ $category->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error('category_id')
@@ -99,7 +114,8 @@
                                             <select name="type_id"
                                                 class="form-select @error('type_id') is-invalid @enderror">
                                                 <option disabled {{ !$model || !$model->type ? 'selected' : '' }}>
-                                                    {{ __('products.choose') }}</option>
+                                                    {{ __('products.choose') }}
+                                                </option>
                                                 @foreach($types as $type)
                                                     <option value="{{ $type->id }}" {{ $model && $model->type_id === $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
                                                 @endforeach
@@ -182,7 +198,8 @@
 
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" id="submitId">{{ __('products.submit') }}</button>
+                            <button type="submit" class="btn btn-primary"
+                                id="submitId">{{ __('products.submit') }}</button>
 
                         </form>
 

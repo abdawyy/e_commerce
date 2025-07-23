@@ -1,6 +1,16 @@
 <x-web.header />
 <x-web.navbar />
 <x-web.sidebar />
+<style>
+    .pointer {
+        cursor: pointer;
+    }
+    #submitStars .bi:hover,
+    #submitStars .bi.hovered,
+    #submitStars .bi.selected {
+        color: gold;
+    }
+</style>
 
 
 <section id="oneProduct" class="pb-5">
@@ -102,8 +112,62 @@
                             {{ __('web.add_to_cart') }}
                         </button>
                     </div>
+                    
                 </div>
+                  <div class="col-md-12 mt-5">
+            <h4 class="fw-bold mb-3">{{ __('web.reviews') }}</h4>
+
+            @auth
+                <div>
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="rating" id="ratingInput">
+
+                    <div class="mb-2">
+                        <label class="fw-semibold">{{ __('web.rate_this_product') }}</label>
+                        <div id="submitStars" class="text-warning fs-4">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <i class="bi bi-star pointer" data-value="{{ $i }}"></i>
+                            @endfor
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <textarea name="comment" class="form-control" rows="2" placeholder="{{ __('web.leave_a_comment') }}"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-sm" id="ajaxSubmitReview">
+                        {{ __('web.submit_review') }}
+                    </button>
+                </div>
+            @else
+                <p class="text-muted">{{ __('web.login_to_review') }}</p>
+            @endauth
+
+            <!-- Scrollable Reviews -->
+            <div id="reviewsList" class="mt-3 border rounded p-2" style="max-height: 300px; overflow-y: auto;">
+                @if ($product->reviews && count($product->reviews))
+                    @foreach ($product->reviews as $review)
+                        <div class="border-bottom pb-2 mb-2">
+                            <strong>{{ $review->user->name }}</strong>
+                            <div class="text-warning fs-6">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                @endfor
+                            </div>
+                            @if ($review->comment)
+                                <p class="mb-0 small">{{ $review->comment }}</p>
+                            @endif
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-muted">{{ __('web.no_reviews_yet') }}</p>
+                @endif
             </div>
+        </div>
+            </div>
+                   <!-- Reviews Section -->
+      
         </div>
     </div>
 
@@ -121,6 +185,11 @@
             </div>
         </div>
     </div>
+    <!-- Comments & Review Section -->
+
+
+
+
 </section>
 
 <script>
@@ -323,3 +392,103 @@ function addToCart(productId) {
         }
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('#submitStars .bi');
+        let selectedRating = 0;
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                selectedRating = index + 1;
+
+                stars.forEach((s, i) => {
+                    s.classList.remove('bi-star-fill');
+                    s.classList.remove('bi-star');
+
+                    if (i < selectedRating) {
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.add('bi-star');
+                    }
+                });
+
+                // Optional: Send selectedRating via AJAX or store in hidden input
+                console.log("User rated:", selectedRating);
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        let selectedRating = 0;
+
+        // Star selection
+        $('#submitStars i').on('click', function () {
+            selectedRating = $(this).data('value');
+            $('#ratingInput').val(selectedRating); // set hidden input
+
+            $('#submitStars i').removeClass('bi-star-fill').addClass('bi-star');
+            $('#submitStars i').each(function () {
+                if ($(this).data('value') <= selectedRating) {
+                    $(this).removeClass('bi-star').addClass('bi-star-fill');
+                }
+            });
+        });
+
+        // Submit form via AJAX
+        $('#ajaxSubmitReview').on('click', function () {
+            const comment = $('textarea[name="comment"]').val();
+            const product_id = $('input[name="product_id"]').val();
+            const rating = $('#ratingInput').val();
+            const token = $('input[name="_token"]').val();
+
+  $.ajax({
+        url: "/reviews",
+        method: "POST",
+        data: {
+            _token: "{{ csrf_token() }}",
+            product_id: product_id,
+            rating: rating,
+            comment: comment
+        },
+           success: function (response) {
+            Toastify({
+                text: response.message || "Review submitted!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#4CAF50", // green
+                stopOnFocus: true
+            }).showToast();
+        },
+        error: function (xhr) {
+            if (xhr.status === 422) {
+                const errors = xhr.responseJSON.errors;
+                console.log(errors);
+                for (let field in errors) {
+                    Toastify({
+                        text: errors[field][0],
+                        duration: 3000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#f44336", // red
+                        stopOnFocus: true
+                    }).showToast();
+                }
+            } else {
+                Toastify({
+                    text: "Something went wrong.",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#f44336",
+                    stopOnFocus: true
+                }).showToast();
+            }
+        }
+    });
+        });
+    });
+</script>
+
+

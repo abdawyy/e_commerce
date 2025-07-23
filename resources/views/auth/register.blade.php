@@ -37,7 +37,7 @@
                     {{ __('auth.already_registered') }}
                 </a>
 
-                <x-button type="button" id="registerBtn" class="ms-4">
+                <x-button type="submit" id="registerBtn" class="ms-4">
                     {{ __('auth.register') }}
                 </x-button>
             </div>
@@ -108,7 +108,7 @@
 
 
     <!-- JS Logic -->
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('registerForm');
             const registerBtn = document.getElementById('registerBtn');
@@ -140,5 +140,5 @@
                 form.submit();
             });
         });
-    </script>
+    </script> --}}
 </x-guest-layout>

@@ -32,7 +32,9 @@ return [
     'logout' => 'تسجيل الخروج',
 
 
-        'discount_codes' => 'رموز الخصم',
+    'discount_codes' => 'رموز الخصم',
     'view_discount_codes' => 'عرض جميع رموز الخصم',
     'add_discount_code' => 'إضافة رمز خصم', // ✅ Translated version
+    'messages_list' => 'قائمة الرسائل',
+
 ];

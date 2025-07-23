@@ -1,6 +1,7 @@
 <x-admin.header />
 <x-admin.aside />
 <x-admin.navbar />
+@php $isRtl = app()->getLocale() === 'ar'; @endphp
 
 
 <main id="main">
@@ -54,4 +55,4 @@
     </div>
 </main>
 
-<x-web.footer />
+<x-admin.footer />

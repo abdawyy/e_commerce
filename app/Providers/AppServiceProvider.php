@@ -30,9 +30,25 @@ class AppServiceProvider extends ServiceProvider
         // Share categories and types with all views
         // Share categories and types with all views
         View::composer('*', function ($view) {
-            $categories = Category::all();
-            $types = Type::all();
-$products = Products::with('productImages', 'productItems', 'orderItems', 'category', 'type')->get();
+            $categories = Category::where('is_active', 1)->get();
+            $types = Type::where('is_active', 1)->get();
+      $products = products::with([
+        'productImages',
+        'productItems',
+        'orderItems',
+        'category',
+        'type'
+    ])
+    ->where('is_active', 1)
+    ->whereHas('category', function ($query) {
+        $query->where('is_active', 1);
+    })
+    ->whereHas('type', function ($query) {
+        $query->where('is_active', 1);
+    })
+    ->get();
+
+
             $cartCount = 0;
 
             // Check if the user is authenticated and retrieve cart data

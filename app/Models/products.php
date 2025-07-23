@@ -18,6 +18,7 @@ class products extends Model
        'category_id',
        'color',
        'type_id',
+       'is_active'
 
 
 
@@ -47,4 +48,9 @@ public function productItems()
 public function productImages(){
     return $this->hasMany(productImages::class);
 }
+public function reviews()
+{
+    return $this->hasMany(Review::class, 'product_id')->where('is_active', 1);
+}
+
 }

@@ -29,6 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active'
     ];
 
     /**
@@ -73,4 +74,9 @@ public function shoppingCart()
 {
     return $this->hasOne(shoppingCart::class);
 }
+public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
+
 }

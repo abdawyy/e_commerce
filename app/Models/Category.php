@@ -12,7 +12,10 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'type_id',
+        'name',
+        'type_id',
+        'is_active'
+
     ];
 
     // Define the table name (optional, but good practice for clarity)

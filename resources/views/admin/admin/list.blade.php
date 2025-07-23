@@ -45,4 +45,4 @@
                 }
 </style>
 
-<x-web.footer />
+<x-admin.footer />

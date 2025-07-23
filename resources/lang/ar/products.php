@@ -23,4 +23,6 @@ return [
     'product_images' => 'صور المنتج:',
     'delete' => 'حذف',
     'submit' => 'إرسال',
+    'reviews_button' => 'المراجعات',
+
 ];

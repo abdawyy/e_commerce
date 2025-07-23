@@ -22,6 +22,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\LanguageMiddleware::class,
+        \App\Http\Middleware\EnsureUserIsActive::class,
+
 
 
     ];
@@ -40,6 +42,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\LanguageMiddleware::class,
+            \App\Http\Middleware\EnsureUserIsActive::class,
+
 
 
         ],
@@ -72,5 +76,7 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'active.user' => \App\Http\Middleware\EnsureUserIsActive::class,
+
     ];
 }

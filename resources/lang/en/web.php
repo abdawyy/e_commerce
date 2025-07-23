@@ -46,7 +46,17 @@ return [
   'privacy_title' => 'Privacy Policy',
   'msg_privacy' => 'Here you can put the content of your Privacy Policy in English.',
   'msg_terms' => 'Here you can put the content of your Terms and Conditions in English.',
-      'message_sent_successfully' => 'Your message has been sent successfully.',
+  'message_sent_successfully' => 'Your message has been sent successfully.',
+  'reviews' => 'Reviews',
+  'rate_this_product' => 'Rate this product',
+  'leave_a_comment' => 'Leave a comment',
+  'login_to_review' => 'Login to add a review',
+  'submit_review' => 'Submit Review',
+  'no_reviews_yet' => 'No reviews yet.',
+
+
+
+
 
 
 ];

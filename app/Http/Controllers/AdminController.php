@@ -121,6 +121,7 @@ class AdminController extends Controller
             'Name' => 'username',
             'Email' => 'email',
             'Created At' => 'created_at',
+
         ];
 
         // Use the search scope defined in the AppTrait
@@ -136,9 +137,10 @@ class AdminController extends Controller
                 'Name' => $admin->username,
                 'Email' => $admin->email,
                 'Created At' => $admin->created_at->format('m/d/Y'),
+                'is_active'=>$admin->is_active
             ];
         });
-        $url = '/admin/list';
+        $url = '/admin';
 
         // Return the view with headers and rows data
         return view('admin.admin.list', compact('headers', 'rows', 'admins', 'search', 'url'));
@@ -256,5 +258,12 @@ class AdminController extends Controller
 
         // Pass the order data to the view
         return view('admin.user.show', compact('user'));
+    }
+       public function toggleUserStatus($id)
+    {
+        $admin = Admin::findOrFail($id);
+
+        self::toggleStatus($admin); // now using self
+        return back()->with('success', 'Status toggled');
     }
 }

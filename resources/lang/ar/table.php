@@ -14,10 +14,15 @@ return [
         'status' => 'الحالة',
         'city' => 'المدينة',
         'total amount' => 'المبلغ الإجمالي',
-               'sale' => 'البيع',
+        'sale' => 'البيع',
         'description' => 'الوصف',
         'color' => 'اللون',
         'category name' => 'اسم الفئة',
+        'phone' => 'رقم الهاتف',
+        'message' => 'الرسالة',
+        'user name' => 'اسم المستخدم',
+        'rating' => 'التقييم',
+        'comment' => 'التعليق',
 
 
 
@@ -27,4 +32,8 @@ return [
     'search_placeholder' => 'ابحث...',
     'search_button' => 'بحث',
     'no_results' => 'لا توجد نتائج.',
+    'status' => 'الحالة',
+    'status_active' => 'نشط',
+    'status_inactive' => 'غير نشط',
+
 ];

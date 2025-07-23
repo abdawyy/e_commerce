@@ -77,6 +77,7 @@ class categoriesController extends Controller
                 'Name' => $data->name,
                 'Type'=>$data->type->name,
                 'Created At' => $data->created_at->format('m/d/Y'),
+                'is_active'=>$data->is_active
             ];
         });
 
@@ -98,5 +99,12 @@ class categoriesController extends Controller
             // Failure flash message
             return redirect()->back()->with('error', 'Failed to delete the record. Record may not exist.');
         }
+    }
+       public function toggleUserStatus($id)
+    {
+        $category = Category::findOrFail($id);
+
+        self::toggleStatus($category); // now using self
+        return back()->with('success', 'Status toggled');
     }
 }

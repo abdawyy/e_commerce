@@ -22,4 +22,6 @@ return [
     'product_images' => 'Product Images:',
     'delete' => 'Delete',
     'submit' => 'Submit',
+    'reviews_button' => 'Reviews',
+
 ];

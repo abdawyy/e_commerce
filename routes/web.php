@@ -12,6 +12,7 @@ use App\Http\Controllers\userController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,28 +66,41 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register');
     Route::post('admin/register', [AdminController::class, 'register']);
+    Route::get('/admin/status/{id}', [AdminController::class, 'toggleUserStatus'])->name('admin.toggleStatus');
+
     //types routes
     Route::match(['get', 'post'], 'admin/type/edit/{id?}', [TypeController::class, 'edit'])->name('type.edit');
     Route::get('admin/type/list', [TypeController::class, 'list'])->name('type.list');
     Route::get('admin/type/delete/{id}', [TypeController::class, 'delete'])->name('type.delete');
+    Route::get('/admin/type/status/{id}', [TypeController::class, 'toggleUserStatus'])->name('admin.type.toggleStatus');
+
     // categories routes
     Route::match(['get', 'post'], 'admin/categories/edit/{id?}', [categoriesController::class, 'edit'])->name('categories.edit');
     Route::get('admin/categories/list', [categoriesController::class, 'list'])->name('categories.list');
     Route::get('admin/categories/delete/{id}', [categoriesController::class, 'delete'])->name('categories.delete');
+    Route::get('/admin/categories/status/{id}', [categoriesController::class, 'toggleUserStatus'])->name('admin.categories.toggleStatus');
+
     // discount codes routes
     Route::match(['get', 'post'], 'admin/discountCodes/edit/{id?}', [discountCodesController::class, 'edit'])->name('discountCodes.edit');
     Route::get('admin/discountCodes/list', [discountCodesController::class, 'list'])->name('discountCodes.list');
     Route::get('admin/discountCodes/delete/{id}', [discountCodesController::class, 'delete'])->name('discountCodes.delete');
+    Route::get('/admin/discountCodes/status/{id}', [discountCodesController::class, 'toggleUserStatus'])->name('admin.discountCodes.toggleStatus');
+
+
     // product routes
     Route::match(['get', 'post'], 'admin/products/edit/{id?}', [ProductController::class, 'edit'])->name('products.edit');
     Route::get('admin/products/list', [ProductController::class, 'list'])->name('products.list');
     Route::get('admin/products/delete/{id}', [ProductController::class, 'delete'])->name('products.delete');
     Route::get('admin/products/image/delete/{id}', [ProductController::class, 'deleteImage'])->name('image.delete');
+    Route::get('/admin/products/status/{id}', [ProductController::class, 'toggleUserStatus'])->name('admin.cities.toggleStatus');
+
 
 
     // cities routes
     Route::match(['get', 'post'], 'admin/cities/edit/{id?}', [CitiesController::class, 'edit'])->name('cities.edit');
     Route::get('admin/cities/list', [CitiesController::class, 'list'])->name('cities.list');
+    Route::get('/admin/cities/status/{id}', [CitiesController::class, 'toggleUserStatus'])->name('admin.cities.toggleStatus');
+
     //user
     Route::get('admin/users/list', [userController::class, 'list'])->name('users.list');
 
@@ -98,6 +112,15 @@ Route::middleware(['admin'])->group(function () {
     Route::put('admin/order/{id}/status', [AdminController::class, 'changeOrderStatus'])->name('order.changeStatus');
 
     Route::get('/admin/user/edit/{id}', [AdminController::class, 'userShow'])->name('user.show');
+    Route::get('/admin/user/status/{id}', [UserController::class, 'toggleUserStatus'])->name('admin.users.toggleStatus');
+
+
+
+    Route::get('/admin/contact/list', [ContactController::class, 'list'])->name('admin.contact.list');
+
+    Route::get('/admin/reviews/{productId}', [ReviewController::class, 'list'])->name('admin.reviews.byProduct');
+    Route::get('/admin/reviews/status/{id}', [ReviewController::class, 'toggleUserStatus'])->name('admin.users.toggleStatus');
+
 
 
 
@@ -125,7 +148,7 @@ Route::middleware(['admin'])->group(function () {
 
 Route::match(['get', 'post'], '/cart/add', [CartController::class, 'add']);
 
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified','active.user'])->group(function () {
 
     // cart routes & checkout routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
@@ -133,4 +156,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
     Route::get('/checkout/address', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
 });

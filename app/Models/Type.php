@@ -12,7 +12,8 @@ class Type extends Model
     use Apptraits;
     use HasFactory;
     protected $fillable = [
-       'name'
+       'name',
+       'is_active'
 
     ];
     protected $table = 'type';

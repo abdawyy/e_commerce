@@ -13,7 +13,10 @@ class Cities extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'price',
+        'name',
+        'price',
+        'is_active'
+
     ];
 
     // Define the table name (optional, but good practice for clarity)
@@ -21,8 +24,9 @@ class Cities extends Model
 
 
 
-    public function order(){
-        return $this->hasMany(orders::class , 'city_id');
+    public function order()
+    {
+        return $this->hasMany(orders::class, 'city_id');
 
     }
 }

@@ -23,7 +23,8 @@
     </div>
 
     {{-- Search Form --}}
-    <form action="{{ url()->current() }}" method="GET" class="mb-3 d-flex justify-content-{{ $isArabic ? 'start' : 'end' }}">
+    <form action="{{ url()->current() }}" method="GET"
+          class="mb-3 d-flex justify-content-{{ $isArabic ? 'start' : 'end' }}">
         <div class="input-group w-25">
             <input type="text" name="search" class="form-control mx-2"
                    placeholder="{{ __('table.search_placeholder') }}" value="{{ request('search') }}">
@@ -53,15 +54,19 @@
                         <tr>
                             @foreach ($headers as $header)
                                 <td>
-                                    {{ $row[$header] ?? '' }}
-
                                     @if($header === 'Action')
-                                        <a class="btn btn-danger" href="{{ $url }}/delete/{{ $row['ID'] }}">
-                                            {{ __('table.delete') }}
-                                        </a>
                                         <a class="btn btn-primary" href="{{ $url }}/edit/{{ $row['ID'] }}">
                                             {{ __('table.view') }}
                                         </a>
+
+                                        @if (isset($row['is_active']))
+                                            <a class="btn {{ $row['is_active'] == 1 ? 'btn-success' : 'btn-warning' }}"
+                                               href="{{ $url }}/status/{{ $row['ID'] }}">
+                                                {{ $row['is_active'] == 1 ? __('table.status_active') : __('table.status_inactive') }}
+                                            </a>
+                                        @endif
+                                    @else
+                                        {{ $row[$header] ?? '' }}
                                     @endif
                                 </td>
                             @endforeach

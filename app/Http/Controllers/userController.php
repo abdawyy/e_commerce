@@ -7,11 +7,12 @@ use App\Traits\Apptraits;
 use App\Models\User;
 class userController extends Controller
 {
+    use Apptraits;
 
-    public $model='App\Models\User';
-  //  public $assocatation='App\Models\productItems';
+    public $model = 'App\Models\User';
+    //  public $assocatation='App\Models\productItems';
 
-    public $url='/admin/user';
+    public $url = '/admin/user';
     public function list(Request $request)
     {
         // Get the search parameter from the request
@@ -21,7 +22,7 @@ class userController extends Controller
         $headerMap = [
             'ID' => 'id',
             'Name' => 'name',
-            'Email'=>'email',
+            'Email' => 'email',
             'Created At' => 'created_at',
         ];
 
@@ -29,21 +30,30 @@ class userController extends Controller
         $data = User::search($search, $headerMap)->paginate(10);
 
         // Define the headers for the table
-        $headers = ['ID', 'Name', 'Created At','Action'];
+        $headers = ['ID', 'Name', 'Created At', 'Action'];
 
         // Prepare the rows by mapping through the types collection
-        $rows =  $data->map(function ($data) {
+        $rows = $data->map(function ($data) {
             return [
                 'ID' => $data->id,
                 'Name' => $data->name,
 
                 'Created At' => $data->created_at->format('m/d/Y'),
+                'is_active' => $data->is_active
+
             ];
         });
 
-        $url=$this->url;
+        $url = $this->url;
 
         // Return the view with headers and rows data
-        return view('admin.user.list', compact('headers', 'rows', 'data', 'search','url'));
+        return view('admin.user.list', compact('headers', 'rows', 'data', 'search', 'url'));
+    }
+    public function toggleUserStatus($id)
+    {
+        $user = User::findOrFail($id);
+
+        self::toggleStatus($user);
+        return back()->with('success', 'Status toggled');
     }
 }

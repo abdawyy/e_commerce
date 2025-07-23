@@ -8,7 +8,8 @@
             <div class="pagetitle">
                 <h1>{{ __('city_list.title') }}</h1>
                 <nav>
-                    <ol class="breadcrumb d-flex {{ app()->getLocale() === 'ar' ? 'text-end' : 'text-start' }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+                    <ol class="breadcrumb d-flex {{ app()->getLocale() === 'ar' ? 'text-end' : 'text-start' }}"
+                        dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
                         <li class="breadcrumb-item">
                             <a href="#">{{ __('city_list.breadcrumb_main') }}</a>
                         </li>
@@ -26,17 +27,18 @@
                 .btn-danger {
                     display: none;
                 }
-                svg{
+
+                svg {
                     width: 5px !important;
-                                        height: 5px !important;
+                    height: 5px !important;
 
                 }
             </style>
 
-          <div>
-  <div class="mt-4">
-{{ $data->links('vendor.pagination.bootstrap-5') }}
-            </div>
-            <x-web.footer />
-      
+            <div>
+                <div class="mt-4">
+                    {{ $data->links('vendor.pagination.bootstrap-5') }}
+                </div>
+                <x-admin.footer />
+
 </main>

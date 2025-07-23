@@ -14,11 +14,16 @@ return [
         'total amount' => 'Total Amount',
         'city' => 'City',
         'status' => 'Status',
-                'sale' => 'Sale',
+        'sale' => 'Sale',
         'description' => 'Description',
         'color' => 'Color',
         'category name' => 'Category Name',
-      
+        'phone' => 'Phone',
+        'message' => 'Message',
+        'user name' => 'User Name',
+        'rating' => 'Rating',
+        'comment' => 'Comment',
+
 
 
     ],
@@ -27,4 +32,8 @@ return [
     'search_placeholder' => 'Search...',
     'search_button' => 'Search',
     'no_results' => 'No results found.',
+    'status' => 'Status',
+    'status_active' => 'Active',
+    'status_inactive' => 'Inactive',
+
 ];

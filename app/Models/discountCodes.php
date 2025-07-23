@@ -12,9 +12,11 @@ class discountCodes extends Model
     use Apptraits;
     use HasFactory;
     protected $fillable = [
-       'code',
-       'discount_percentage',
-       'expiry_date',
+        'code',
+        'discount_percentage',
+        'expiry_date',
+        'is_active'
+
 
 
 
@@ -22,12 +24,14 @@ class discountCodes extends Model
     ];
     protected $table = 'discount_codes';
 
-    public function orderDiscounts(){
+    public function orderDiscounts()
+    {
         return $this->hasMany(orderDiscounts::class);
 
     }
-    public function order(){
-        return $this->hasMany(orders::class , 'discount_code_id');
+    public function order()
+    {
+        return $this->hasMany(orders::class, 'discount_code_id');
 
     }
 }

@@ -2,8 +2,10 @@
 <x-admin.navbar />
 
 <div class="d-flex justify-content-center align-items-center vh-100">
-    
+
     <form action="{{ route('admin.login') }}" method="POST" class="p-4 shadow-sm bg-white rounded w-25">
+            <x-alert-error />
+
           <!-- Language Switcher -->
 <div class="d-flex justify-content-center px-4 pt-3">
     <a class="text-decoration-none mx-2 {{ app()->getLocale() == 'en' ? 'fw-bold text-primary' : 'text-black' }}" href="{{ url('/lang/en') }}">EN</a>
@@ -33,4 +35,4 @@
     </form>
 </div>
 
-<x-web.footer />
+<x-admin.footer />

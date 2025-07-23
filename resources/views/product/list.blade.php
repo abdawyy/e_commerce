@@ -65,7 +65,7 @@ svg{
                             <div class="card h-100 shadow-sm border-0">
                                 <a href="{{ route('product.show', [$product->id]) }}" class="text-decoration-none">
                                     <img src="{{ $product->productImages->isNotEmpty() 
-                                        ? 'https://hayahfashion.net/' . Storage::url($product->productImages->first()->images) 
+                                        ? asset('storage/' . $product->productImages->first()->images) 
                                         : asset('assets/img/default-product.jpg') }}"
                                          class="card-img-top img-fluid"
                                          alt="{{ $product->name }}">
