@@ -87,12 +87,12 @@ footer {
 
 #home .hero {
     position: relative;
-    background-image: url('../img/p-white-t-shirt-2-hero.jpeg');
-    background-size: cover;
+    background-image: url('../img/main2.jpg');
+    background-size:contain;
     background-repeat: no-repeat;
     background-position: center center;
     width: 100%;
-    object-fit: cover;
+    object-fit:contain;
     border-radius: var(--border-radius);
     aspect-ratio: 6/3;
     z-index: 0;
@@ -218,7 +218,7 @@ footer {
 
 
 #category .tops {
-    background-image: url("../img/p-blue-top.jpg");
+    background-image: url("../img/main.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
@@ -248,7 +248,7 @@ footer {
 }
 
 #category .t-shirt {
-    background-image: url("../img/p-blue-t-shit-2.jpeg");
+    background-image: url("../img/main3.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
