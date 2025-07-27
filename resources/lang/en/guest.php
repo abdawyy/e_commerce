@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'show_title' => 'Guest Details',
+    'breadcrumb_main' => 'Dashboard',
+    'breadcrumb_active' => 'Guest Information',
+    'addresses' => 'Address',
+    'address_line1' => 'Address Line 1',
+    'address_line2' => 'Address Line 2',
+    'city' => 'City',
+    'postal_code' => 'Postal Code',
+    'mobile' => 'Mobile Number',
+    'address' => 'Address',
+    'not_available' => 'Not Available',
+    'orders' => 'Orders',
+    'search_orders' => 'Search Orders...',
+    'order' => 'Order',
+    'total' => 'Total Amount',
+    'status' => 'Status',
+    'discount' => 'Discount Code',
+    'pending' => 'Pending',
+    'no_orders' => 'No orders found.',
+      'guest_title' => 'Guest Details',
+    'breadcrumb_guest' => 'Guest Information',
+];
