@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
     <style>
-        /* Basic styling for the email */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -65,32 +64,23 @@
 
         <div>
             <h2>Order #{{ $order->id }}</h2>
-            <p><strong>User:</strong> {{ $order->user->name ?? 'N/A' }}</p>
+            <p><strong>User:</strong> {{ $order->user->name ?? $order->guestUser->name ?? 'Guest' }}</p>
+            <p><strong>Email:</strong> {{ $order->user->email ?? $order->guestUser->email ?? 'N/A' }}</p>
             <p><strong>City:</strong> {{ $order->cities->name ?? 'N/A' }}</p>
             <p><strong>Delivery Fees:</strong> {{ $order->cities->price ?? 'N/A' }} LE</p>
             <p><strong>Total Amount:</strong> {{ $order->total_amount ?? 'N/A' }} LE</p>
             <p><strong>Discount Code:</strong> {{ $order->discountCodes->code ?? 'N/A' }}</p>
-            <p><strong>Order Date:</strong>
-                {{ $order->created_at ? $order->created_at->format('Y-m-d H:i') : 'N/A' }}</p>
+            <p><strong>Order Date:</strong> {{ $order->created_at ? $order->created_at->format('Y-m-d H:i') : 'N/A' }}</p>
             <p><strong>Status:</strong> {{ $order->status ?? 'Pending' }}</p>
         </div>
 
         <h2>Address</h2>
         <div>
-            @if ($order->user && $order->user->address->isNotEmpty())
-                @foreach ($order->user->address as $address)
-                    <div class="address-section">
-                        <p><strong>Address Line 1:</strong> {{ $address->address_line1 ?? 'N/A' }}</p>
-                        <p><strong>Address Line 2:</strong> {{ $address->address_line2 ?? 'N/A' }}</p>
-                        <p><strong>City:</strong> {{ $address->city ?? 'N/A' }}</p>
-                        <p><strong>State:</strong> {{ $address->state ?? 'N/A' }}</p>
-                        <p><strong>Postal Code:</strong> {{ $address->postal_code ?? 'N/A' }}</p>
-                                                <p><strong>Mobile:</strong> {{ $address->phone_number ?? 'N/A' }}</p>
-
-                        <p><strong>Country:</strong> {{ $address->country ?? 'N/A' }}</p>
-                        <hr>
-                    </div>
-                @endforeach
+            @if($order->address)
+                <p><strong>Address Line 1:</strong> {{ $order->address->address_line1 ?? 'N/A' }}</p>
+                <p><strong>Address Line 2:</strong> {{ $order->address->address_line2 ?? 'N/A' }}</p>
+                <p><strong>Postal Code:</strong> {{ $order->address->postal_code ?? 'N/A' }}</p>
+                <p><strong>Mobile:</strong> {{ $order->address->phone_number ?? 'N/A' }}</p>
             @else
                 <p><strong>Address:</strong> N/A</p>
             @endif
@@ -108,27 +98,25 @@
                 </tr>
             </thead>
             <tbody>
-         @forelse($order->orderItems as $item)
-    <tr>
-        <td>{{ $item->id }}</td>
-        <td>{{ $item->product->name ?? 'N/A' }}</td>
-        <td>{{ $item->size ?? 'N/A' }}</td>
-        <td>{{ $item->quantity ?? 0 }}</td>
-        <td>
-            @if ($item->product->sale)
-
-                {{ $item->product->price - ($item->product->price * $item->product->sale / 100) }} LE
-            @else
-                {{ $item->product->price ?? 0 }} LE
-            @endif
-        </td>
-    </tr>
-@empty
-    <tr>
-        <td colspan="5">No items found</td>
-    </tr>
-@endforelse
-
+                @forelse($order->orderItems as $item)
+                    <tr>
+                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->product->name ?? 'N/A' }}</td>
+                        <td>{{ $item->size ?? 'N/A' }}</td>
+                        <td>{{ $item->quantity ?? 0 }}</td>
+                        <td>
+                            @if ($item->product->sale)
+                                {{ $item->product->price - ($item->product->price * $item->product->sale / 100) }} LE
+                            @else
+                                {{ $item->product->price ?? 0 }} LE
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5">No items found</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
 

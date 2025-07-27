@@ -25,6 +25,8 @@ return [
     'discounts' => 'أكواد الخصم',
     'view_discounts' => 'عرض كل الأكواد',
     'add_discount' => 'إضافة كود خصم',
+    'guest_list' => 'قائمة الضيوف',
+
 
     'pages' => 'الصفحات',
     'order_list' => 'قائمة الطلبات',

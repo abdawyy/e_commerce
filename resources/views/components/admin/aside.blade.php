@@ -125,18 +125,24 @@
                 <span>{{ __('admin_sidebar.user_list') }}</span>
             </a>
         </li>
-<li class="nav-item">
-    <a class="nav-link collapsed" href="{{ route('admin.contact.list') }}">
-        <i class="bi bi-envelope-fill mx-2"></i>
-        <span>{{ __('admin_sidebar.messages_list') }}</span>
-    </a>
-</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('admin.contact.list') }}">
+                <i class="bi bi-envelope-fill mx-2"></i>
+                <span>{{ __('admin_sidebar.messages_list') }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('admin.guest.list') }}">
+                <i class="bi bi-person mx-2"></i>
+                <span>{{ __('admin_sidebar.guest_list') }}</span>
+            </a>
+        </li>
 
         <!-- Logout -->
         <li class="nav-item">
             <form action="{{ route('admin.logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-danger w-100 mt-3">
+                <button type="submit" class="btn btn-dark w-100 mt-3">
                     {{ __('admin_sidebar.logout') }}
                 </button>
             </form>

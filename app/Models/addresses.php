@@ -20,14 +20,23 @@ class addresses extends Model
         'state',
         'postal_code',
         'country',
-        'phone_number'
+        'phone_number',
+        'guest_id'
 
     ];
     protected $table = 'addresses';
- // Define the relationship with the User model
- public function user()
- {
-     return $this->belongsTo(User::class);
- }
+    // Define the relationship with the User model
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function guestUser()
+    {
+        return $this->belongsTo(GuestUser::class , 'guest_id');
+    }
+    public function order()
+    {
+        return $this->hasMany(orders::class ,'address_id');
+    }
 
 }

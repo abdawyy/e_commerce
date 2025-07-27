@@ -17,6 +17,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AdminOrderNotificationMail;
+use Illuminate\Support\Facades\Session;
+use App\Models\GuestUser;
+
 
 
 
@@ -32,7 +35,162 @@ class CheckoutController extends Controller
     public $addressModel = 'App\Models\addresses';
     public $orderModel = 'App\Models\orders';
 
+    public $guestModel = 'App\Models\GuestUser';
+
     public function index()
+    {
+        if (auth()->check()) {
+            return $this->renderAuthIndex();
+        } else {
+            return $this->renderGuestIndex();
+        }
+
+    }
+   
+    public function order(Request $request)
+    {
+        if (Auth::check()) {
+            return $this->processAuthOrder($request);
+        } else {
+            return $this->processGuestOrder($request);
+        }
+    }
+    protected function processAuthOrder(Request $request)
+    {
+        $validatedData = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'address_line1' => 'required|string|max:255',
+            'address_line2' => 'nullable|string|max:255',
+            'city' => 'required|string|max:100',
+            'postal_code' => 'required|digits_between:4,10',
+            'phone_number' => 'required|numeric|digits_between:10,15',
+            'promo_code' => ['nullable', 'string', 'max:50', new ValidPromoCode],
+        ]);
+
+        $promoCodeValue = discountCodes::where('code', $validatedData['promo_code'] ?? null)->first();
+        $city = Cities::where('id', $validatedData['city'])->firstOrFail();
+        $userId = Auth::id();
+
+        // Update or create address
+
+        $addressValues = $request->all();
+        $addressValues['user_id'] = Auth::id();
+        unset($addressValues['_token']); // Remove CSRF token
+        self::updateOrCreate($this->addressModel, ['user_id' => $userId], $addressValues);
+
+        // Calculate total
+        $cart = new ShoppingCart();
+        $total = $cart->totalPrice($userId, $city->price, $promoCodeValue->discount_percentage ?? 0);
+
+        // Create order
+        $order = self::updateOrCreate($this->orderModel, ['id' => ''], [
+            'user_id' => $userId,
+            'total_amount' => $total,
+            'status' => 'pending',
+            'discount_code_id' => $promoCodeValue->id ?? null,
+            'city_id' => $city->id,
+        ]);
+
+        // Add items and handle failure
+        if (!$order->addOrderItems($userId)['success']) {
+            return redirect()->back()->with('error', 'Failed to add items to order.');
+        }
+
+        // Payment
+        payments::createCashPayment($order->id, $total);
+
+        // Load full order
+        $order = $this->loadOrderWithRelations($order->id);
+
+        // PDF & Email
+        $pdfPath = self::generatePdfInvoice($order);
+        Mail::to($order->user->email)->send(new OrderConfirmationMail($order, $pdfPath));
+        Mail::to('hayah.mona@hotmail.com')->send(new AdminOrderNotificationMail($order, $pdfPath));
+
+        return view('checkout.receipt', [
+            'orderID' => $order->id,
+            'totalPrice' => $total,
+            'deleveryFees' => $city->price,
+        ]);
+    }
+    protected function processGuestOrder(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|email|max:255',
+            'full_name' => 'required|string|max:255',
+            'address_line1' => 'required|string|max:255',
+            'address_line2' => 'nullable|string|max:255',
+            'city' => 'required|string|max:100',
+            'postal_code' => 'required|digits_between:4,10',
+            'phone_number' => 'required|numeric|digits_between:10,15',
+            'promo_code' => ['nullable', 'string', 'max:50', new ValidPromoCode],
+        ]);
+
+
+        $promoCodeValue = discountCodes::where('code', $validatedData['promo_code'] ?? null)->first();
+        $city = Cities::where('id', $validatedData['city'])->firstOrFail();
+        $guestData = [
+            'email' => $validatedData['email'],
+            'name' => $validatedData['full_name'],
+
+        ];
+        $userId = null;
+
+        // Optional: Save address anonymously
+        $guestUser = self::updateOrCreate($this->guestModel, ['email' => $validatedData['email']], $guestData);
+
+
+        $addressValues = $request->all();
+        unset($addressValues['_token']); // Remove CSRF token
+
+
+        $addressValues['user_id'] = null;
+        $addressValues['guest_id'] = $guestUser->id;
+
+
+
+        $address = self::updateOrCreate($this->addressModel, ['id' => ''], $addressValues);
+
+        // Calculate total
+        $cart = new ShoppingCart();
+        $total = $cart->totalPrice(null, $city->price, $promoCodeValue->discount_percentage ?? 0);
+
+        // Create order
+        $order = self::updateOrCreate($this->orderModel, ['id' => ''], [
+            'user_id' => null,
+            'total_amount' => $total,
+            'status' => 'pending',
+            'discount_code_id' => $promoCodeValue->id ?? null,
+            'city_id' => $city->id,
+            'address_id' => $address->id,
+            'guest_id'=>$guestUser->id
+        ]);
+
+
+        if (!$order->addOrderItems(null, true)['success']) {
+
+            return redirect()->back()->with('error', 'Failed to add items to order.');
+        }
+
+
+        payments::createCashPayment($order->id, $total);
+
+        $order = $this->loadOrderWithRelations($order->id);
+
+        $pdfPath = self::generatePdfInvoice($order);
+        Mail::to($validatedData['email'])->send(new OrderConfirmationMail($order, $pdfPath));
+        Mail::to('hayah.mona@hotmail.com')->send(new AdminOrderNotificationMail($order, $pdfPath));
+
+        return view('checkout.receipt', [
+            'orderID' => $order->id,
+            'totalPrice' => $total,
+            'deleveryFees' => $city->price,
+        ]);
+    }
+
+
+
+    private function renderAuthIndex()
     {
         // Retrieve cart items for the authenticated user
         $cartItems = shoppingCart::with('product', 'productItems') // assuming a 'product' relation exists
@@ -46,115 +204,67 @@ class CheckoutController extends Controller
         $total = $subtotal;
 
         // Return the checkout view with the necessary data
-        return view('checkout.address', compact('cartItems', 'subtotal',  'total'));
+        return view('checkout.address', compact('cartItems', 'subtotal', 'total'));
     }
-    public function order(Request $request)
+    private function renderGuestIndex()
     {
-        $validatedData = $request->validate([
-            'full_name'     => 'required|string|max:255',
-            'address_line1' => 'required|string|max:255',
-            'address_line2' => 'nullable|string|max:255',
-            'city'          => 'required|string|max:100',
-            'state'         => 'required|string|max:100',
-            'postal_code'   => 'required|digits_between:4,10',
-            'country'       => 'required|string|max:100',
-            'phone_number'  => 'required|numeric|digits_between:10,15',
-            'promo_code'    => ['nullable', 'string', 'max:50', new ValidPromoCode],
-        ]);
 
-        $promoCode = $validatedData['promo_code'] ?? null;
+        $sessionCart = session()->get('cart', []);
+        $cartItems = collect();
+        $subtotal = 0;
 
-        // Prepare the attributes and values for updating/creating address
-        $addressAttributes = [
-            'user_id' => Auth::id()
-        ];
+        // Group by product_id and size_id
+        $combined = [];
 
-        $addressValues = $request->all();
-        $addressValues['user_id'] = Auth::id();
-        unset($addressValues['_token']); // Remove CSRF token
+        foreach ($sessionCart as $item) {
+            $key = $item['product_id'] . '_' . $item['size_id'];
 
-        // Fetch the promo code details from the DiscountCodes model
-        $promoCodeValue = discountCodes::where('code', $promoCode)->first();
-
-        // Fetch the city based on the provided city ID
-        $city = Cities::where('id', $validatedData['city'])->first();
-
-        // Update or create the user's address
-        self::updateOrCreate($this->addressModel, $addressAttributes, $addressValues);
-
-        // Initialize ShoppingCart instance and calculate the total price
-        $shoppingCart = new ShoppingCart();
-        $totalPrice = $shoppingCart->totalPrice(Auth::id(), $city->price, $promoCodeValue->discount_percentage ?? 0);
-
-        // Prepare order data
-        $orderValues = [
-            'user_id'      => Auth::id(),
-            'total_amount' => $totalPrice, // Null safe handling for discount_percentage
-            'status'       => 'pending',
-            'discount_code_id' => $promoCodeValue->id ?? null, // If no promoCodeValue, use null
-            'city_id' => $city->id
-        ];
-
-        // Define the order attributes, including a placeholder ID value for new order creation
-        $orderAttributes = ['id' => ''];
-
-        // Create or update the order
-        $order = self::updateOrCreate($this->orderModel, $orderAttributes, $orderValues);
-
-        // Retrieve the created/updated order along with related data
-
-
-
-
-
-        // Add items from the shopping cart to the order
-$addItemsResult = $order->addOrderItems(Auth::id());
-
-if (!$addItemsResult['success']) {
-    return redirect()->back()->with('error', $addItemsResult['message']);
-}
-        // Create payment record
-        payments::createCashPayment($order->id, $totalPrice);
-
-        // Return success message
-        $orderID = $order->id;
-        $deleveryFees = $city->price;
-
-        $order = orders::with([
-            'user',
-            'user.address',            // Load the user related to the order
-            'discountCodes',           // Load the discount codes related to the order
-            'cities',                  // Load the city related to the order
-            'orderItems.product',      // Load products for each order item
-            'orderItems.productItems', // Load sizes for each order item
-            'payments'                 // Load all payments related to the order
-        ])->findOrFail($order->id);
-
-
-        // Generate PDF
-        $pdf = Pdf::loadView('pdf.invoice', ['order' => $order]);
-
-        // Define the directory path for saving the PDF
-        $invoiceDirectory = storage_path('app/public/invoices');
-
-        // Check if the directory exists, and create it if it doesn't
-        if (!is_dir($invoiceDirectory)) {
-            mkdir($invoiceDirectory, 0775, true);  // Create the directory with proper permissions
+            if (!isset($combined[$key])) {
+                $combined[$key] = $item;
+            } else {
+                // Combine quantity
+                $combined[$key]['quantity'] += $item['quantity'];
+            }
         }
 
-        // Save the PDF to the specified path
-        $pdfPath = $invoiceDirectory . '/invoice_' . $order->id . '.pdf';
-        $pdf->save($pdfPath);
+        foreach ($combined as $item) {
+            $product = \App\Models\products::find($item['product_id']);
 
-        // Send Email with the invoice PDF path
-        Mail::to($order->user->email)->send(new OrderConfirmationMail($order, $pdfPath));
+            if ($product) {
+                $cartItems->push((object) [
+                    'product' => $product,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'sale' => $item['sale'],
+                    'size_id' => $item['size_id'],
+                    'key' => $key
+                ]);
 
-        $adminEmail = 'hayahhfashion@gmail.com'; // Replace with the admin's email
-        Mail::to($adminEmail)->send(new AdminOrderNotificationMail($order, $pdfPath));
+                $subtotal += ($product->price - ($product->price * $product->sale / 100)) * $item['quantity'];
+            }
+        }
+
+        return view('checkout.address', [
+            'cartItems' => $cartItems,
+            'subtotal' => $subtotal,
+            'total' => $subtotal,
+        ]);
 
 
-
-        // Return a view with the order details
-        return view('checkout.receipt', compact('orderID', 'totalPrice', 'deleveryFees'));
+    }
+    protected function loadOrderWithRelations($orderId)
+    {
+        return orders::with([
+            'user',
+            'user.address',            // Load user and their address
+            'guestUser',               // In case the order belongs to a guest
+            'guestUser.address',       // Guest user address
+            'discountCodes',           // Discount codes
+            'cities',                  // City of the order
+            'orderItems.product',      // Product details
+            'orderItems.productItems', // Product sizes/items
+            'payments',
+            'address'                 // Payment info
+        ])->findOrFail($orderId);
     }
 }

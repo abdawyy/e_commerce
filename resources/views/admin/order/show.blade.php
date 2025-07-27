@@ -34,7 +34,7 @@
                     {{ __('orders.order_number') }} #{{ $order->id }}
                 </div>
                 <div class="card-body">
-                    <p><strong>{{ __('orders.user') }}:</strong> {{ $order->user->name ?? 'N/A' }}</p>
+                    <p><strong>{{ __('orders.user') }}:</strong> {{ $order->user->name ?? $order->guestUser->name ?? 'N/A' }}</p>
                     <p><strong>{{ __('orders.city') }}:</strong> {{ $order->cities->name ?? 'N/A' }}</p>
                     <p><strong>{{ __('orders.delivery_fees') }}:</strong> {{ $order->cities->price ?? 'N/A' }} LE</p>
                     <p><strong>{{ __('orders.total_amount') }}:</strong> {{ $order->total_amount }} LE</p>
@@ -47,24 +47,23 @@
             <h2>{{ __('orders.address') }}</h2>
             <div class="card mb-3">
                 <div class="card-body">
-                    @if ($order->user && $order->user->address->isNotEmpty())
-                        @foreach ($order->user->address as $address)
-                            <div class="mb-3">
-                                <p><strong>{{ __('orders.address_line1') }}:</strong> {{ $address->address_line1 }}</p>
-                                <p><strong>{{ __('orders.address_line2') }}:</strong> {{ $address->address_line2 }}</p>
-                                <p><strong>{{ __('orders.city') }}:</strong> {{ $address->city }}</p>
-                                <p><strong>{{ __('orders.state') }}:</strong> {{ $address->state }}</p>
-                                <p><strong>{{ __('orders.phone') }}:</strong> {{ $address->phone_number }}</p>
-                                <p><strong>{{ __('orders.postal_code') }}:</strong> {{ $address->postal_code }}</p>
-                                <p><strong>{{ __('orders.country') }}:</strong> {{ $address->country }}</p>
-                                <hr>
-                            </div>
-                        @endforeach
+                    @if ($order->address)
+                        <div class="mb-3">
+                            <p><strong>{{ __('orders.address_line1') }}:</strong>
+                                {{ $order->address->address_line1 ?? 'N/A' }}</p>
+                            <p><strong>{{ __('orders.address_line2') }}:</strong>
+                                {{ $order->address->address_line2 ?? 'N/A' }}</p>
+
+                            <p><strong>{{ __('orders.phone') }}:</strong> {{ $order->address->phone_number ?? 'N/A' }}</p>
+                            <p><strong>{{ __('orders.postal_code') }}:</strong> {{ $order->address->postal_code ?? 'N/A' }}
+                            </p>
+                        </div>
                     @else
                         <p><strong>{{ __('orders.address') }}:</strong> N/A</p>
                     @endif
                 </div>
             </div>
+
 
             <h2>{{ __('orders.order_items') }}</h2>
             <table class="table">
@@ -85,14 +84,8 @@
                             <td>{{ $item->size ?? 'N/A' }}</td>
                             <td>{{ $item->quantity ?? 0 }}</td>
                             <td>
-                                @if ($item->product->sale)
-                                    <span class="text-decoration-line-through">
-                                        {{ $item->product->price }} LE
-                                    </span>
-                                    {{ $item->product->price - ($item->product->price * $item->product->sale / 100) }} LE
-                                @else
-                                    {{ $item->price / $item->quantity ?? 0 }} LE
-                                @endif
+                 
+                                    {{ $item->price / $item->quantity ?? 1 }} LE
                             </td>
                         </tr>
                     @empty
@@ -135,7 +128,8 @@
                     <label for="status">{{ __('orders.change_status') }}</label>
                     <select name="status" class="form-control">
                         <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="Processing" {{ $order->status == 'Processing' ? 'selected' : '' }}>Processing</option>
+                        <option value="Processing" {{ $order->status == 'Processing' ? 'selected' : '' }}>Processing
+                        </option>
                         <option value="Completed" {{ $order->status == 'Completed' ? 'selected' : '' }}>Completed</option>
                         <option value="Cancelled" {{ $order->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                     </select>
@@ -149,11 +143,17 @@
 {{-- Print Styles --}}
 <style>
     @media print {
-        #navbar, #sidebar, #printButton, form, .btn {
+
+        #navbar,
+        #sidebar,
+        #printButton,
+        form,
+        .btn {
             display: none;
         }
 
-        #receipt, #receipt * {
+        #receipt,
+        #receipt * {
             visibility: visible;
         }
 

@@ -11,12 +11,16 @@ use Illuminate\Support\Facades\Auth; // For accessing user info if needed
 use App\Models\shoppingCart;
 use App\Models\Cities;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Session;
+
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    public $cartCount;
+
     public function register(): void
     {
         //
@@ -32,32 +36,35 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $categories = Category::where('is_active', 1)->get();
             $types = Type::where('is_active', 1)->get();
-      $products = products::with([
-        'productImages',
-        'productItems',
-        'orderItems',
-        'category',
-        'type'
-    ])
-    ->where('is_active', 1)
-    ->whereHas('category', function ($query) {
-        $query->where('is_active', 1);
-    })
-    ->whereHas('type', function ($query) {
-        $query->where('is_active', 1);
-    })
-    ->get();
+            $products = products::with([
+                'productImages',
+                'productItems',
+                'orderItems',
+                'category',
+                'type'
+            ])
+                ->where('is_active', 1)
+                ->whereHas('category', function ($query) {
+                    $query->where('is_active', 1);
+                })
+                ->whereHas('type', function ($query) {
+                    $query->where('is_active', 1);
+                })
+                ->get();
 
-
-            $cartCount = 0;
+            $cartCount = $this->cartCount;
 
             // Check if the user is authenticated and retrieve cart data
             if (Auth::check()) {
                 $userId = Auth::id();
                 // Count items in the shopping cart for the authenticated user
                 $cartCount = ShoppingCart::where('user_id', $userId)->count();
+            } else {
+                $cartCount = count(Session::get('cart', []));
+
+
             }
-$cities = Cities::where('is_active', 1)->get();
+            $cities = Cities::where('is_active', 1)->get();
 
 
             // Share the cart count with all views

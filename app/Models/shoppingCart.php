@@ -36,26 +36,53 @@ class shoppingCart extends Model
  }
 
   // Calculate the total price for a specific user
-  public function totalPrice($userId , $cityPrice , $promoCode = 0)
-  {
-      // Retrieve all orders for the given user
-      $orders = $this->where('user_id', $userId)->get();
+public function totalPrice($userId = null, $cityPrice, $promoCode = 0)
+{
+    // Step 1: Retrieve the cart items (guest or authenticated user)
+    $cartItems = $this->getCartItems($userId);
 
-      // Initialize total price
-      $total = 0;
+    // Step 2: Calculate the subtotal
+    $subtotal = $this->calculateSubtotal($cartItems);
 
-      // Loop through the orders and calculate the total
-      foreach ($orders as $order) {
-          $productPrice = $order->product->price; // Assuming price is in the Product model
+    // Step 3: Apply promo discount
+    $afterDiscount = $this->applyPromoDiscount($subtotal, $promoCode);
 
-          // Calculate the total for each item (product price + size price) * quantity
-          $total += ( $order->product->price - ($order->product->price *$order->product->sale / 100) ) * $order->quantity;;
-      }
-      $totalWithoutDevFees= $total -($total *  $promoCode / 100);
-      $totalPrice = $totalWithoutDevFees + $cityPrice;
+    // Step 4: Add city price
+    return $afterDiscount + $cityPrice;
+}
+// Get cart items for either a user or guest
+protected function getCartItems($userId)
+{
+    if ($userId) {
+        return $this->where('user_id', $userId)->get();
+    }
 
-      return $totalPrice;
-  }
+    return self::getGuestCartItems();
+}
+
+// Calculate subtotal from cart items
+protected function calculateSubtotal($items)
+{
+    $total = 0;
+
+    foreach ($items as $item) {
+        $price = $item->price ?? $item['price'];
+        $sale = $item->sale ?? $item['sale'];
+
+        $discountedPrice = $price - ($price * $sale / 100);
+$total += $discountedPrice * ($item->quantity ?? $item['quantity']);
+    }
+
+    return $total;
+}
+
+// Apply promo discount
+protected function applyPromoDiscount($amount, $promoPercent)
+{
+    return $amount - ($amount * $promoPercent / 100);
+}
+
+
   public static function getCartItemsByUserId($userId)
   {
       try {

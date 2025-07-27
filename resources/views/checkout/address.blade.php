@@ -19,20 +19,34 @@
                     <div class="col-md-8 col-lg-10">
                         <form action="{{ route('checkout.order') }}" method="POST">
                             @csrf
+                            <div class="mb-3">
+                                @guest
+                                    <label for="email" class="form-label">{{ __('checkout.email') }}</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        value="{{ old('email') }}" required>
+                                                                        <label for="full_name" class="form-label">{{ __('checkout.full_name') }}</label>
+                                    <input type="text" name="full_name" id="full_name" class="form-control"
+                                        value="{{ old('full_name') }}" required>
+                                @else
+                                    <label for="full_name" class="form-label">{{ __('checkout.full_name') }}</label>
+                                    <input type="text" name="full_name" id="full_name" class="form-control"
+                                        value="{{ old('full_name', Auth::user()->name ?? '') }}" required>
+                                @endguest
+                            </div>
+
 
                             <div class="mb-3">
-                                <label for="full_name" class="form-label">{{ __('checkout.full_name') }}</label>
-                                <input type="text" name="full_name" id="full_name" class="form-control" value="{{ old('full_name') }}" required>
+                                <label for="address_line_1"
+                                    class="form-label">{{ __('checkout.address_line1') }}</label>
+                                <input type="text" name="address_line1" id="address_line_1" class="form-control"
+                                    value="{{ old('address_line1') }}" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="address_line_1" class="form-label">{{ __('checkout.address_line1') }}</label>
-                                <input type="text" name="address_line1" id="address_line_1" class="form-control" value="{{ old('address_line1') }}" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="address_line_2" class="form-label">{{ __('checkout.address_line2') }}</label>
-                                <input type="text" name="address_line2" id="address_line_2" class="form-control" value="{{ old('address_line2') }}">
+                                <label for="address_line_2"
+                                    class="form-label">{{ __('checkout.address_line2') }}</label>
+                                <input type="text" name="address_line2" id="address_line_2" class="form-control"
+                                    value="{{ old('address_line2') }}">
                             </div>
 
                             <div class="mb-3">
@@ -49,28 +63,33 @@
 
                             <div class="mb-3">
                                 <label for="state" class="form-label">{{ __('checkout.state') }}</label>
-                                <input type="text" name="state" id="state" class="form-control" value="{{ old('state') }}" required>
+                                <input type="text" name="state" id="state" class="form-control"
+                                    value="{{ old('state') }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="postal_code" class="form-label">{{ __('checkout.postal_code') }}</label>
-                                <input type="text" name="postal_code" id="postal_code" class="form-control" value="{{ old('postal_code') }}" required>
+                                <input type="text" name="postal_code" id="postal_code" class="form-control"
+                                    value="{{ old('postal_code') }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="country" class="form-label">{{ __('checkout.country') }}</label>
-                                <input type="text" name="country" id="country" class="form-control" value="{{ old('country') }}" required>
+                                <input type="text" name="country" id="country" class="form-control"
+                                    value="{{ old('country') }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="phone_number" class="form-label">{{ __('checkout.phone_number') }}</label>
-                                <input type="text" name="phone_number" id="phone_number" class="form-control" value="{{ old('phone_number') }}" required>
+                                <input type="text" name="phone_number" id="phone_number" class="form-control"
+                                    value="{{ old('phone_number') }}" required>
                             </div>
 
                             <!-- Promo Code -->
                             <div class="mb-3">
                                 <label for="promo_code" class="form-label">{{ __('checkout.promo_code') }}</label>
-                                <input type="text" name="promo_code" id="promo_code" class="form-control @error('promo_code') is-invalid @enderror"
+                                <input type="text" name="promo_code" id="promo_code"
+                                    class="form-control @error('promo_code') is-invalid @enderror"
                                     value="{{ old('promo_code') }}" placeholder="{{ __('checkout.enter_promo') }}" />
 
                                 @if (session('success'))
@@ -114,4 +133,3 @@
 </section>
 
 <x-web.footer />
-

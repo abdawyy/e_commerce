@@ -35,7 +35,7 @@ class AdminController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-       
+
 
         // Attempt to log the admin in
         if (Auth::guard('admin')->attempt($request->only('email', 'password'))) {
@@ -47,21 +47,21 @@ class AdminController extends Controller
         return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
     }
     public function logout(Request $request)
-{
-    // Log out the admin user
-    Auth::guard('admin')->logout();
+    {
+        // Log out the admin user
+        Auth::guard('admin')->logout();
 
-    // Invalidate the session and regenerate the CSRF token
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        // Invalidate the session and regenerate the CSRF token
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    // Redirect to the login page with a success message
-    return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
-}
+        // Redirect to the login page with a success message
+        return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
+    }
 
-    
-    
-    
+
+
+
 
     /**
      * Show the registration form for admin.
@@ -106,7 +106,7 @@ class AdminController extends Controller
         $totalOrders = orders::count();
 
         // Get the sum of the total amount of all orders
-        $totalAmount = orders::sum('total_amount');
+        $totalAmount = orders::where('status', 'Completed')->sum('total_amount');
 
         return view('admin.index', compact('totalUsers', 'totalOrders', 'totalAmount'));
     }
@@ -137,7 +137,7 @@ class AdminController extends Controller
                 'Name' => $admin->username,
                 'Email' => $admin->email,
                 'Created At' => $admin->created_at->format('m/d/Y'),
-                'is_active'=>$admin->is_active
+                'is_active' => $admin->is_active
             ];
         });
         $url = '/admin';
@@ -170,6 +170,8 @@ class AdminController extends Controller
             'ID' => 'id',
             'User' => 'user.name',
             'Email' => 'user.email',
+            'Guest User' => 'guestUser.name',
+            'Guest Email' => 'guestUser.email',
             'Total Amount' => 'total_amount',
             'Status' => 'status',
             'Code' => 'discountCodes.code',
@@ -181,21 +183,28 @@ class AdminController extends Controller
         $data = orders::search($search, $headerMap)->paginate(10);
 
         // Define the headers for the table
-        $headers = ['ID', 'Name', 'Email', 'Total Amount', 'Created At', 'Code', 'City', 'Status', 'Action'];
+        $headers = ['ID', 'Name', 'Email', 'Total Amount', 'Code', 'City', 'Status', 'Created At', 'Action'];
 
         // Prepare the rows by mapping through the data collection
         $rows = $data->map(function ($order) {
+            $name = $order->user->name ?? $order->guestUser->name ?? 'N/A';
+            $email = $order->user->email ?? $order->guestUser->email ?? 'N/A';
+            $code = $order->discountCodes->code ?? 'N/A';
+            $city = $order->cities->name ?? 'N/A';
+            $createdAt = $order->created_at ? $order->created_at->format('m/d/Y') : 'N/A';
+
             return [
                 'ID' => $order->id,
-                'Name' => $order->user->name ?? 'N/A', // Use 'N/A' if user is null
-                'Email' => $order->user->email ?? 'N/A', // Use 'N/A' if email is null
+                'Name' => $name,
+                'Email' => $email,
                 'Total Amount' => $order->total_amount,
+                'Code' => $code,
+                'City' => $city,
                 'Status' => $order->status,
-                'City' => $order->cities->name  ?? 'N/A',
-                'Code' => $order->discountCodes->code ?? 'N/A', // Use 'N/A' if discountCode is null
-                'Created At' => $order->created_at->format('m/d/Y'),
+                'Created At' => $createdAt,
             ];
         });
+
 
         $url = '/admin/order';
         return view('admin.order.list', compact('headers', 'rows', 'data', 'search', 'url'));
@@ -205,12 +214,15 @@ class AdminController extends Controller
         // Retrieve the order with its related data, including product and size for orderItems
         $order = orders::with([
             'user',
-            'user.address',            // Load the user related to the order
-            'discountCodes',   // Load the discount codes related to the order
-            'cities',          // Load the city related to the order
-            'orderItems.product', // Load products for each order item
-            'orderItems.productItems',    // Load sizes for each order item
-            'payments'         // Load all payments related to the order
+            'user.address',            // Load user and their address
+            'guestUser',               // In case the order belongs to a guest
+            'guestUser.address',       // Guest user address
+            'discountCodes',           // Discount codes
+            'cities',                  // City of the order
+            'orderItems.product',      // Product details
+            'orderItems.productItems', // Product sizes/items
+            'payments',
+            'address'          // Load all payments related to the order
         ])->find($id);
 
         // Check if the order exists
@@ -247,7 +259,8 @@ class AdminController extends Controller
             'address',  // Load all addresses associated with the user
             'order.user',          // Load the user for each order
             'order.discountCodes',  // Load the discount code related to the order
-            'order.cities'           // Load the city related to the order
+            'order.cities',
+            'order.address'           // Load the city related to the order
         ])->find($id);
 
         // Check if the order exists
@@ -259,7 +272,7 @@ class AdminController extends Controller
         // Pass the order data to the view
         return view('admin.user.show', compact('user'));
     }
-       public function toggleUserStatus($id)
+    public function toggleUserStatus($id)
     {
         $admin = Admin::findOrFail($id);
 

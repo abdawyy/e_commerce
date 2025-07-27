@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GuestUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin;
 use App\Http\Controllers\AdminController;
@@ -123,6 +124,13 @@ Route::middleware(['admin'])->group(function () {
 
 
 
+    Route::get('admin/guest/list', [GuestUserController::class, 'list'])->name('admin.guest.list');
+    Route::get('/admin/guest/edit/{id}', [GuestUserController::class, 'guestShow'])->name('admin.guest.show');
+
+
+
+
+
 
 
 
@@ -147,15 +155,18 @@ Route::middleware(['admin'])->group(function () {
 
 
 Route::match(['get', 'post'], '/cart/add', [CartController::class, 'add']);
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
+Route::get('/checkout/address', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
+Route::get('/cart/delete/guest/{key}', [CartController::class, 'deleteGuest'])->name('cart.guest.delete');
 
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified','active.user'])->group(function () {
+
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'active.user'])->group(function () {
 
     // cart routes & checkout routes
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::get('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
-    Route::get('/checkout/address', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
+
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 });

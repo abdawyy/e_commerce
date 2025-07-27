@@ -133,7 +133,7 @@
                                         </div>
 
                                         <div class="col-12 mb-3">
-                                            @php $sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'S/M', 'L/XL']; @endphp
+                                            @php $sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL','4XL','5XL','6XL' ,'S/M', 'L/XL']; @endphp
                                             @foreach($sizes as $size)
                                                 @php $item = isset($model) && $model->productItems ? $model->productItems->firstWhere('size', $size) : null; @endphp
                                                 <div class="form-check form-check-inline">

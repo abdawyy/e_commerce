@@ -32,10 +32,8 @@
                                     <p class="mb-0"><strong>{{ __('users.address_line1') }}:</strong> {{ $address->address_line1 ?? 'N/A' }}</p>
                                     <p class="mb-0"><strong>{{ __('users.address_line2') }}:</strong> {{ $address->address_line2 ?? 'N/A' }}</p>
                                     <p class="mb-0"><strong>{{ __('users.city') }}:</strong> {{ $address->city ?? 'N/A' }}</p>
-                                    <p class="mb-0"><strong>{{ __('users.state') }}:</strong> {{ $address->state ?? 'N/A' }}</p>
                                     <p class="mb-0"><strong>{{ __('users.postal_code') }}:</strong> {{ $address->postal_code ?? 'N/A' }}</p>
                                     <p class="mb-0"><strong>{{ __('users.mobile') }}:</strong> {{ $address->phone_number ?? 'N/A' }}</p>
-                                    <p class="mb-0"><strong>{{ __('users.country') }}:</strong> {{ $address->country ?? 'N/A' }}</p>
                                     <hr class="my-1">
                                 </div>
                             @endforeach

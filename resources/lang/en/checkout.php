@@ -20,4 +20,6 @@ return [
     'subtotal' => 'Subtotal',
     'total' => 'Total',
     'confirm' => 'Confirm',
+        'email' => 'Email Address',
+
 ];

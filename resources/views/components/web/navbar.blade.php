@@ -199,7 +199,7 @@
 <style>
     @media (max-width: 767.98px) {
         .gap-mobile-12em {
-            gap: 12.5em !important;
+            gap: 11.5em !important;
         }
         .navbar-brand{
             margin: 10px !important;

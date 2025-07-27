@@ -21,6 +21,8 @@ return [
     'types' => 'Types',
     'view_types' => 'View all Types',
     'add_type' => 'Add Type',
+        'guest_list' => 'Guest List',
+
 
 
 

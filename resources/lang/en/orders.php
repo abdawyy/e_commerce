@@ -31,5 +31,7 @@ return [
     'change_status' => 'Change Status',
     'update' => 'Update Status',
     'print_receipt' => 'Print Receipt',
+    'breadcrumb_show' => 'Show Order',
+
 ];
 

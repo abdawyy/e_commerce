@@ -5,6 +5,8 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 
 
@@ -191,4 +193,31 @@ protected function deleteImageFromStorage($imagePath)
         $model->{$booleanField} = !$model->{$booleanField};
         return $model->save();
     }
+    protected function getGuestCartItems()
+{
+    return session('cart', []);
+}
+protected function generatePdfInvoice($order)
+{
+    // Generate the PDF from the invoice view and order data
+    $pdf = Pdf::loadView('pdf.invoice', ['order' => $order]);
+
+    // Define the directory path to store the PDF
+    $invoiceDirectory = storage_path('app/public/invoices');
+
+    // Create the directory if it doesn't exist
+    if (!is_dir($invoiceDirectory)) {
+        mkdir($invoiceDirectory, 0775, true);
+    }
+
+    // Define the full path for the PDF file
+    $pdfPath = $invoiceDirectory . '/invoice_' . $order->id . '.pdf';
+
+    // Save the PDF to the file system
+    $pdf->save($pdfPath);
+
+    // Return the saved path if needed
+    return $pdfPath;
+}
+
 }

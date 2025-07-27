@@ -31,5 +31,7 @@ return [
     'change_status' => 'تغيير الحالة',
     'update' => 'تحديث الحالة',
     'print_receipt' => 'طباعة الفاتورة',
+    'breadcrumb_show' => 'عرض الطلب',
+
 ];
 
