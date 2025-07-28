@@ -460,6 +460,9 @@ function addToCart(productId) {
                 backgroundColor: "#4CAF50", // green
                 stopOnFocus: true
             }).showToast();
+                setTimeout(function () {
+        location.reload();
+    }, 2000); // 2000 milliseconds = 2 seconds
         },
         error: function (xhr) {
             if (xhr.status === 422) {
