@@ -78,42 +78,46 @@ function getCartQuantity($item) {
                     @endphp
 
                     <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="d-flex gap-3 align-items-start">
-                                @if (!empty($product->productImages->first()?->images))
-                                    <img src="{{ asset('storage/' . $product->productImages->first()->images) }}" alt="" width="100">
-                                @endif
+                    <div class="card-body">
+    <div class="d-flex flex-column flex-md-row align-items-start gap-3">
+        @if (!empty($product->productImages->first()?->images))
+            <img src="{{ asset('storage/' . $product->productImages->first()->images) }}"
+                 alt=""
+                 class="img-fluid"
+                 style="max-width: 100px;">
+        @endif
 
-                                <div class="w-100">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <h5 class="card-title text-truncate mb-0 fc-black">{{ $product->name ?? 'Product' }}</h5>
-                                        <h5 class="fw-bolder text-truncate fc-black mb-0">LE {{ number_format($priceTotal, 2) }}</h5>
-                                    </div>
+        <div class="flex-grow-1 w-100">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between">
+                <h5 class="card-title text-truncate mb-1 fc-black">{{ $product->name ?? 'Product' }}</h5>
+                <h5 class="fw-bolder text-truncate fc-black mb-1">LE {{ number_format($priceTotal, 2) }}</h5>
+            </div>
 
-                                    <div class="d-flex flex-column pt-2">
-                                        <p class="text-truncate mb-0 fc-gray">{{ __('cart.color') }} : {{ $product->color ?? '-' }}</p>
-                                        <p class="text-truncate mb-0 fc-gray">{{ __('cart.size') }} : {{ $size }}</p>
-                                    </div>
+            <div class="d-flex flex-column pt-1">
+                <p class="text-truncate mb-0 fc-gray">{{ __('cart.color') }}: {{ $product->color ?? '-' }}</p>
+                <p class="text-truncate mb-0 fc-gray">{{ __('cart.size') }}: {{ $size }}</p>
+            </div>
 
-                                    <div class="d-flex align-items-center justify-content-between pt-3">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="quantity fw-bolder fs-5">{{ $quantity }}</div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-3">
-                                            @if (!$isGuest)
-                                                <a href="{{ route('cart.delete', ['id' => $item->id]) }}">
-                                                    <i class="fa-regular fa-trash-can pointer fs-4" title="{{ __('cart.delete') }}"></i>
-                                                </a>
-                                            @else
-                                                <a href="{{ route('cart.guest.delete', ['key' => $item->key]) }}">
-                                                    <i class="fa-regular fa-trash-can pointer fs-4" title="{{ __('cart.delete') }}"></i>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between pt-2">
+                <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
+                    <span class="quantity fw-bolder fs-5">{{ $quantity }}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    @if (!$isGuest)
+                        <a href="{{ route('cart.delete', ['id' => $item->id]) }}">
+                            <i class="fa-regular fa-trash-can pointer fs-4" title="{{ __('cart.delete') }}"></i>
+                        </a>
+                    @else
+                        <a href="{{ route('cart.guest.delete', ['key' => $item->key]) }}">
+                            <i class="fa-regular fa-trash-can pointer fs-4" title="{{ __('cart.delete') }}"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
                     </div>
                 @endforeach
             </div>

@@ -178,7 +178,7 @@ class CheckoutController extends Controller
         $order = $this->loadOrderWithRelations($order->id);
 
         $pdfPath = self::generatePdfInvoice($order);
-        Mail::to($validatedData['email'])->send(new OrderConfirmationMail($order, $pdfPath));
+        Mail::to($guestUser->email)->send(new OrderConfirmationMail($order, $pdfPath));
         Mail::to('hayah.mona@hotmail.com')->send(new AdminOrderNotificationMail($order, $pdfPath));
 
         return view('checkout.receipt', [

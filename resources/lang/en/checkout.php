@@ -11,7 +11,7 @@ return [
     'delivery_fees' => 'delivery fees',
     'state' => 'State',
     'postal_code' => 'Postal Code',
-    'country' => 'Country',
+    'country' => 'Area',
     'phone_number' => 'Phone Number',
     'promo_code' => 'Promo Code (Optional)',
     'enter_promo' => 'Enter promo code',

@@ -25,7 +25,7 @@
 <style>
     .hero {
         position: relative;
-        background-image: url('{{ asset('assets/img/p-white-t-shirt-2-hero.jpeg') }}');
+        background-image: url('{{ asset('assets/img/main2.jpg') }}');
         background-size: cover;
         background-position: center;
         width: 100%;

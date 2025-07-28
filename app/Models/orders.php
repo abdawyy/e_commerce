@@ -65,10 +65,11 @@ class orders extends Model
     }
     public function guestUser()
     {
-        return $this->belongsTo(GuestUser::class , 'guest_id');
+        return $this->belongsTo(GuestUser::class, 'guest_id');
     }
-    public function address(){
-        return $this->belongsTo(addresses::class ,'address_id');
+    public function address()
+    {
+        return $this->belongsTo(addresses::class, 'address_id');
     }
     public function addOrderItems($userId, $isGuest = false)
     {
@@ -106,9 +107,11 @@ class orders extends Model
             $sizeId = $cartItem['size_id'] ?? $cartItem->size_id;
             $quantity = $cartItem['quantity'] ?? $cartItem->quantity;
 
+
             $productItem = productItems::where('products_id', $productsId)
                 ->where('id', $sizeId)
                 ->first();
+
 
             if (!$productItem) {
                 throw new \Exception('Product item not found.');
@@ -116,10 +119,12 @@ class orders extends Model
 
             $productItem->quantity = max(0, $productItem->quantity - $quantity);
             $productItem->save();
-            $product = products::findOrFail($cartItem['product_id']);
+            $productId = is_array($cartItem) ? $cartItem['product_id'] : $cartItem->products_id;
+            $product = products::findOrFail($productId);
 
             $price = ($product->price ?? 0) - (($product->price ?? 0) * ($product->sale ?? 0) / 100);
             $totalPrice = $price * $quantity;
+
 
             orderItems::create([
                 'orders_id' => $this->id,
