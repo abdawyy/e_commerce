@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\products;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Http\Requests\ReviewRequest;
 use App\Traits\Apptraits;
+use Illuminate\Support\Facades\Mail;
+
 
 
 class ReviewController extends Controller
@@ -14,20 +17,40 @@ class ReviewController extends Controller
     public $url = '/admin/reviews';
 
 
-    public function store(ReviewRequest $request)
-    {
-        $request->validated();
 
 
-        Review::create([
-            'user_id' => auth()->id(),
-            'product_id' => $request->product_id,
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-        ]);
+public function store(ReviewRequest $request)
+{
+    $request->validated();
 
-        return response()->json(['message' => 'Review submitted']);
-    }
+    $review = Review::create([
+        'user_id' => auth()->id(),
+        'product_id' => $request->product_id,
+        'rating' => $request->rating,
+        'comment' => $request->comment,
+    ]);
+
+    // Fetch product and user info
+    $product = products::find($request->product_id);
+    $user = auth()->user();
+
+    // Prepare email content
+    $body = "A new review has been submitted:\n\n" .
+            "Product: {$product->name}\n" .
+            "User: {$user->name} ({$user->email})\n" .
+            "Rating: {$request->rating}\n\n" .
+            "Comment:\n{$request->comment}";
+
+    // Send email
+    Mail::raw($body, function ($message) use ($user) {
+        $message->to('hayah.mona@hotmail.com')
+                ->subject('New Product Review Submitted')
+                ->replyTo($user->email);
+    });
+
+    return response()->json(['message' => 'Review submitted']);
+}
+
     public function list(Request $request, $productId)
     {
         // Get the search parameter from the request
@@ -49,7 +72,7 @@ class ReviewController extends Controller
             ->paginate(10);
 
         // Define table headers
-        $headers = ['ID', 'User Name', 'Rating', 'Comment', 'Created At','Action'];
+        $headers = ['ID', 'User Name', 'Rating', 'Comment', 'Created At', 'Action'];
 
         // Prepare rows
         $rows = $data->map(function ($data) {
@@ -59,7 +82,7 @@ class ReviewController extends Controller
                 'Rating' => str_repeat('⭐', $data->rating),
                 'Comment' => $data->comment,
                 'Created At' => $data->created_at->format('m/d/Y'),
-                'is_active'=>$data->is_active,
+                'is_active' => $data->is_active,
             ];
         });
 
@@ -75,6 +98,6 @@ class ReviewController extends Controller
         self::toggleStatus($review);
         return back()->with('success', 'Status toggled');
     }
-    
+
 
 }

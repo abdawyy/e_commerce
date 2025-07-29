@@ -40,7 +40,7 @@ class ContactController extends Controller
                 "Phone: {$data['phone']}\n\n" .
                 "Message:\n{$data['message']}";
 
-            $message->to('hayahhfashion@gmail.com')
+            $message->to('hayah.mona@hotmail.com')
                 ->subject('New Contact Message from ' . $data['name'])
                 ->text($body)
                 ->replyTo($data['email']);
