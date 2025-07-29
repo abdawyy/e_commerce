@@ -84,22 +84,6 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="state" class="form-label">{{ __('checkout.state') }}</label>
-                                <input type="text" name="state" id="state"
-                                       class="form-control @error('state') is-invalid @enderror"
-                                       value="{{ old('state') }}" required>
-                                @error('state')<div class="text-danger">{{ $message }}</div>@enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="postal_code" class="form-label">{{ __('checkout.postal_code') }}</label>
-                                <input type="text" name="postal_code" id="postal_code"
-                                       class="form-control @error('postal_code') is-invalid @enderror"
-                                       value="{{ old('postal_code') }}" required>
-                                @error('postal_code')<div class="text-danger">{{ $message }}</div>@enderror
-                            </div>
-
-                            <div class="mb-3">
                                 <label for="country" class="form-label">{{ __('checkout.country') }}</label>
                                 <input type="text" name="country" id="country"
                                        class="form-control @error('country') is-invalid @enderror"

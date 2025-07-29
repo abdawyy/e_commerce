@@ -22,7 +22,8 @@
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             color: #333333;
         }
 
@@ -37,7 +38,8 @@
             margin-bottom: 20px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #dddddd;
             padding: 8px;
             text-align: left;
@@ -70,7 +72,8 @@
             <p><strong>Delivery Fees:</strong> {{ $order->cities->price ?? 'N/A' }} LE</p>
             <p><strong>Total Amount:</strong> {{ $order->total_amount ?? 'N/A' }} LE</p>
             <p><strong>Discount Code:</strong> {{ $order->discountCodes->code ?? 'N/A' }}</p>
-            <p><strong>Order Date:</strong> {{ $order->created_at ? $order->created_at->format('Y-m-d H:i') : 'N/A' }}</p>
+            <p><strong>Order Date:</strong> {{ $order->created_at ? $order->created_at->format('Y-m-d H:i') : 'N/A' }}
+            </p>
             <p><strong>Status:</strong> {{ $order->status ?? 'Pending' }}</p>
         </div>
 
@@ -79,8 +82,9 @@
             @if($order->address)
                 <p><strong>Address Line 1:</strong> {{ $order->address->address_line1 ?? 'N/A' }}</p>
                 <p><strong>Address Line 2:</strong> {{ $order->address->address_line2 ?? 'N/A' }}</p>
-                <p><strong>Postal Code:</strong> {{ $order->address->postal_code ?? 'N/A' }}</p>
                 <p><strong>Mobile:</strong> {{ $order->address->phone_number ?? 'N/A' }}</p>
+                <p><strong>Area:</strong> {{ $order->address->country ?? 'N/A' }}</p>
+
             @else
                 <p><strong>Address:</strong> N/A</p>
             @endif

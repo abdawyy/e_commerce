@@ -62,7 +62,6 @@ class CheckoutController extends Controller
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'nullable|string|max:255',
             'city' => 'required|string|max:100',
-            'postal_code' => 'required|digits_between:4,10',
             'phone_number' => 'required|numeric|digits_between:10,15',
             'promo_code' => ['nullable', 'string', 'max:50', new ValidPromoCode],
         ]);
@@ -121,7 +120,6 @@ class CheckoutController extends Controller
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'nullable|string|max:255',
             'city' => 'required|string|max:100',
-            'postal_code' => 'required|digits_between:4,10',
             'phone_number' => 'required|numeric|digits_between:10,15',
             'promo_code' => ['nullable', 'string', 'max:50', new ValidPromoCode],
         ]);

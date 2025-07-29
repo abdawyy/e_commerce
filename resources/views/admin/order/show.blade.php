@@ -55,7 +55,8 @@
                                 {{ $order->address->address_line2 ?? 'N/A' }}</p>
 
                             <p><strong>{{ __('orders.phone') }}:</strong> {{ $order->address->phone_number ?? 'N/A' }}</p>
-                            <p><strong>{{ __('orders.postal_code') }}:</strong> {{ $order->address->postal_code ?? 'N/A' }}
+                            
+                             <p><strong>{{ __('checkout.country') }}:</strong> {{ $order->address->country ?? 'N/A' }}
                             </p>
                         </div>
                     @else
