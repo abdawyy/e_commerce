@@ -67,7 +67,7 @@
 
 @forelse($order->orderItems as $item)
     <tr>
-        <td>{{ $item->id }}</td>
+        <td>{{ $item->products_id }}</td>
         <td>{{ $item->product->name ?? 'N/A' }}</td>
         <td>{{ $item->size ?? 'N/A' }}</td>
         <td>{{ $item->quantity ?? 0 }}</td>
