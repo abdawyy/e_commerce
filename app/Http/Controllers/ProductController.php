@@ -139,7 +139,8 @@ class ProductController extends Controller
         ];
 
         // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = products::with('category', 'type')->search($search, $headerMap)->paginate(10);
+        $data = products::with('category', 'type')->search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query
+
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Created At', 'Price', 'Sale', 'Type', 'Description', 'Color', 'Category Name', 'Action'];

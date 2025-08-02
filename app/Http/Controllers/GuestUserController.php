@@ -24,7 +24,7 @@ class GuestUserController extends Controller
         ];
 
         // Use the search scope defined in the AppTrait
-        $data = GuestUser::search($search, $headerMap)->paginate(10);
+        $data = GuestUser::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query;
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Email', 'Created At', 'Action'];

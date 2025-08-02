@@ -76,7 +76,7 @@ class ContactController extends Controller
         ];
 
         // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = Message::search($search, $headerMap)->paginate(10);
+        $data = Message::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Email', 'Phone', 'Message', 'Created At'];

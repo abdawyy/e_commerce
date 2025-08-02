@@ -57,7 +57,7 @@ class CitiesController extends Controller
         ];
 
         // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = Cities::search($search, $headerMap)->paginate(10);
+        $data = Cities::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Price', 'Created At', 'Action'];

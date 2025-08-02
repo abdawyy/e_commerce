@@ -27,7 +27,7 @@ class userController extends Controller
         ];
 
         // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = User::search($search, $headerMap)->paginate(10);
+        $data = User::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query;
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Created At', 'Action'];

@@ -69,7 +69,7 @@ public function store(ReviewRequest $request)
         $data = Review::with('user')
             ->where('product_id', $productId)
             ->search($search, $headerMap)
-            ->paginate(10);
+            ->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query;
 
         // Define table headers
         $headers = ['ID', 'User Name', 'Rating', 'Comment', 'Created At', 'Action'];
