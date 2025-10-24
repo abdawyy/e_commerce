@@ -54,6 +54,8 @@ class AppServiceProvider extends ServiceProvider
             $query->where('is_active', 1);
         })
         ->orderByDesc('is_highest') // ✅ Highest products first
+                        ->orderByDesc('name')
+
         ->get();
 
             $cartCount = $this->cartCount;
