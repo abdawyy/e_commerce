@@ -93,7 +93,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('admin/products/list', [ProductController::class, 'list'])->name('products.list');
     Route::get('admin/products/delete/{id}', [ProductController::class, 'delete'])->name('products.delete');
     Route::get('admin/products/image/delete/{id}', [ProductController::class, 'deleteImage'])->name('image.delete');
-    Route::get('/admin/products/status/{id}', [ProductController::class, 'toggleUserStatus'])->name('admin.cities.toggleStatus');
+    Route::get('/admin/products/status/{id}', [ProductController::class, 'toggleUserStatus'])->name('admin.products.toggleStatus');
+        Route::get('/admin/products/toggleHighestStatus/{id}', [ProductController::class, 'toggleHighestStatus'])->name('admin.products.toggleHighestStatus');
+
 
 
 

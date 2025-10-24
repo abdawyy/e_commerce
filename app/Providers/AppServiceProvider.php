@@ -33,24 +33,28 @@ class AppServiceProvider extends ServiceProvider
     {
         // Share categories and types with all views
         // Share categories and types with all views
-        View::composer('*', function ($view) {
-            $categories = Category::where('is_active', 1)->get();
-            $types = Type::where('is_active', 1)->get();
-            $products = products::with([
-                'productImages',
-                'productItems',
-                'orderItems',
-                'category',
-                'type'
-            ])
-                ->where('is_active', 1)
-                ->whereHas('category', function ($query) {
-                    $query->where('is_active', 1);
-                })
-                ->whereHas('type', function ($query) {
-                    $query->where('is_active', 1);
-                })
-                ->get();
+  View::composer('*', function ($view) {
+    // Active categories and types
+    $categories = Category::where('is_active', 1)->get();
+    $types = Type::where('is_active', 1)->get();
+
+    // Fetch active products with relationships
+    $products = Products::with([
+            'productImages',
+            'productItems',
+            'orderItems',
+            'category',
+            'type'
+        ])
+        ->where('is_active', 1)
+        ->whereHas('category', function ($query) {
+            $query->where('is_active', 1);
+        })
+        ->whereHas('type', function ($query) {
+            $query->where('is_active', 1);
+        })
+        ->orderByDesc('is_highest') // ✅ Highest products first
+        ->get();
 
             $cartCount = $this->cartCount;
 

@@ -157,7 +157,8 @@ class ProductController extends Controller
                 'Color' => $data->color,
                 'Category Name' => $data->category->name,
                 'Created At' => $data->created_at->format('m/d/Y'),
-                'is_active' => $data->is_active
+                'is_active' => $data->is_active,
+                'is_highest' => $data->is_highest
 
             ];
         });
@@ -238,36 +239,37 @@ class ProductController extends Controller
 
 
             // For non-POST requests (GET or other types), show the products without search/filtering
-            // You can provide default data or show the initial unfiltered products
-            $data = products::with([
-                'category',       // Fetch the associated category
-                'type',           // Fetch the associated type
-                'orderItems',     // Fetch the associated order items
-                'shoppingCart',   // Fetch shopping cart items
-                'productItems',   // Fetch product items
-                'productImages'   // Fetch product images
-            ])->where('is_active', 1)
+            // Base query for products
+            $query = products::with([
+                'category',
+                'type',
+                'orderItems',
+                'shoppingCart',
+                'productItems',
+                'productImages'
+            ])
+                ->where('is_active', 1)
                 ->whereHas('category', function ($query) {
                     $query->where('is_active', 1);
                 })
                 ->whereHas('type', function ($query) {
                     $query->where('is_active', 1);
-                })->paginate(10);
-            // Check if a category ID is provided and filter products accordingly
+                });
+
+            // 🔹 If category ID is provided, apply category filter
             if ($id) {
-                $data = products::where('category_id', $id)->where('is_active', 1)
-                    ->whereHas('category', function ($query) {
-                        $query->where('is_active', 1);
-                    })
-                    ->whereHas('type', function ($query) {
-                        $query->where('is_active', 1);
-                    })
-                    ->with(['category', 'type', 'orderItems', 'shoppingCart', 'productItems', 'productImages'])
-                    ->paginate(10);
+                $query->where('category_id', $id);
             }
 
+            // 🔹 Sort so that is_highest = 1 appears first, then newest products
+            $data = $query->orderByDesc('is_highest')
+                ->orderByDesc('name')
+                ->paginate(10);
+
+            // 🔹 Load categories and category name
             $categories = Category::all();
-            $categoryName = Category::where('id', $id)->first();
+            $categoryName = Category::find($id);
+
         }
 
         return view('product.list', compact('data', 'categories', 'id', 'categoryName'));
@@ -315,6 +317,15 @@ class ProductController extends Controller
         self::toggleStatus($product);
         return back()->with('success', 'Status toggled');
     }
+
+    public function toggleHighestStatus($id)
+    {
+        $product = products::findOrFail($id);
+
+        self::toggleStatus($product, "is_highest");
+        return back()->with('success', 'Status toggled');
+    }
+
 
 
 }

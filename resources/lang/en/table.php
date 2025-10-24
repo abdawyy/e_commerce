@@ -35,5 +35,8 @@ return [
     'status' => 'Status',
     'status_active' => 'Active',
     'status_inactive' => 'Inactive',
+    'status_highest' => 'Highest',
+'status_normal'  => 'Normal',
+
 
 ];

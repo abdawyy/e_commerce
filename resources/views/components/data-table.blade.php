@@ -65,6 +65,13 @@
                                                 {{ $row['is_active'] == 1 ? __('table.status_active') : __('table.status_inactive') }}
                                             </a>
                                         @endif
+
+                                        @if (isset($row['is_highest']))
+    <a class="btn {{ $row['is_highest'] == 1 ? 'btn-primary' : 'btn-secondary' }}"
+       href="{{ route('admin.products.toggleHighestStatus', $row['ID']) }}">
+        {{ $row['is_highest'] == 1 ? __('table.status_highest') : __('table.status_normal') }}
+    </a>
+@endif
                                     @else
                                         {{ $row[$header] ?? '' }}
                                     @endif

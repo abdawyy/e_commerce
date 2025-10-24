@@ -23,5 +23,6 @@ return [
     'delete' => 'Delete',
     'submit' => 'Submit',
     'reviews_button' => 'Reviews',
+    
 
 ];

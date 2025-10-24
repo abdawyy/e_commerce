@@ -27,6 +27,9 @@ return [
 
 
     ],
+    'status_highest' => 'الأعلى',
+'status_normal'  => 'عادي',
+
     'view' => 'عرض',
     'delete' => 'حذف',
     'search_placeholder' => 'ابحث...',

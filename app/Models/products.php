@@ -18,7 +18,8 @@ class products extends Model
        'category_id',
        'color',
        'type_id',
-       'is_active'
+       'is_active',
+       'is_highest'
 
 
 
