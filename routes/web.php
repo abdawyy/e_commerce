@@ -32,16 +32,18 @@ Route::get('/legal', function () {
 
 Route::get('/lang/{lang}', function ($lang) {
     if (!in_array($lang, ['en', 'ar'])) {
-        $lang = 'en'; // default fallback
+        $lang = 'en';
     }
+
     session()->put('locale', $lang);
-    app()->setLocale($lang);
-    return redirect()->back();
-})->name('lang.switch');
+    return redirect()->route('home');
+
+});
+
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/send-contact', [ContactController::class, 'send'])->name('contact.send');
 Route::get('product/show/{id}', [ProductController::class, 'productWebShow'])->name('product.show');
