@@ -2,6 +2,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="canonical" href="{{ url('/') }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href={{ asset("admin/assets/css/bootstrap.min.css")}}>
 
@@ -20,6 +22,7 @@
     <!--  -->
     <link rel="stylesheet" href={{ asset("admin/assets/css/all.min.css")}}>
     <link rel="stylesheet" href={{ asset("admin/assets/css/style-Dashboard.css")}}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Hayah</title>
 </head>
 <style>
@@ -29,12 +32,12 @@
     }
 
     [dir="rtl"] #main {
-        margin-right: 300px; /* same as sidebar width */
+        margin-right: 280px; /* same as sidebar width */
         margin-left: 0;
     }
 
     [dir="ltr"] #main {
-        margin-left: 300px;
+        margin-left: 280px;
         margin-right: 0;
     }
 </style>

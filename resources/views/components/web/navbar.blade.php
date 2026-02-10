@@ -2,222 +2,168 @@
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
-    <!-- Charset & Viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- CSRF Token -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- SEO Meta Tags -->
+    <title>{{ __('web.title') }}</title>
     <meta name="description" content="{{ __('web.description') }}">
     <meta name="keywords" content="{{ __('web.keywords') }}">
     <meta name="author" content="Hayah Fashion">
+    <link rel="canonical" href="{{ url()->current() }}">
 
-    <!-- Open Graph Meta -->
+    <link rel="alternate" hreflang="en" href="{{ url('/lang/en') }}">
+    <link rel="alternate" hreflang="ar" href="{{ url('/lang/ar') }}">
+
+    <meta property="og:site_name" content="Hayah Fashion">
     <meta property="og:title" content="{{ __('web.title') }}">
     <meta property="og:description" content="{{ __('web.description') }}">
     <meta property="og:image" content="{{ asset('assets/img/logo.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="{{ app()->getLocale() == 'ar' ? 'ar_AR' : 'en_US' }}">
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ __('web.title') }}">
     <meta name="twitter:description" content="{{ __('web.description') }}">
     <meta name="twitter:image" content="{{ asset('assets/img/logo.png') }}">
 
-    <!-- hreflang for SEO -->
-    <link rel="alternate" hreflang="en" href="{{ url('/lang/en') }}">
-    <link rel="alternate" hreflang="ar" href="{{ url('/lang/ar') }}">
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="{{ url()->current() }}">
-
-    <!-- Title -->
-    <title>{{ __('web.title') }}</title>
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=El+Messiri:wght@400;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root { --brand-dark: #000000; --glass-bg: #ffffff; }
+        body { font-family: 'Inter', 'Cairo', sans-serif; color: var(--brand-dark); }
+
+        .promo-bar { background: var(--brand-dark); color: #fff; font-size: 0.75rem; text-align: center; padding: 8px 0; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Navbar & Dropdown Fixes */
+        .navbar-custom { background: var(--glass-bg); border-bottom: 1px solid #eee; z-index: 1050; }
+        
+        .nav-link { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: var(--brand-dark) !important; cursor: pointer; }
+
+        /* This CSS ensures the categories dropdown ALWAYS opens */
+        @media (min-width: 992px) {
+            .nav-item.dropdown:hover .dropdown-menu {
+                display: block !important;
+                margin-top: 0;
+            }
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 9999 !important;
+        }
+
+        .dropdown-item { padding: 10px 20px; font-size: 0.9rem; font-weight: 500; }
+        .dropdown-item:hover { background-color: #f8f9fa; color: #000; }
+
+        /* Badge Styling */
+        .badge-cart { font-size: 0.65rem; background: #000; color: #fff; border-radius: 50px; padding: 2px 6px; }
+
+        /* Modal Overlay Fix */
+        .modal-search-overlay { background: rgba(0,0,0,0.95); }
+        .search-input-full { background: transparent; border: none; border-bottom: 2px solid #fff; border-radius: 0; color: #fff; font-size: 2.5rem; text-align: center; width: 100%; }
+        .search-input-full:focus { box-shadow: none; border-bottom-color: #fff; color: #fff; }
+
+        [dir="rtl"] .dropdown-menu { text-align: right; }
+    </style>
 </head>
 
 <body>
 
-    <header id="header" class="bg-black">
-        <p class="text-center fc-white py-2 mb-0">{{ __('web.title') }}.</p>
-    </header>
+    <div class="promo-bar">
+        {{ __('web.title') }} — MODERN FASHION REIMAGINED
+    </div>
 
-    {{-- Navigation --}}
-    <nav class="navbar navbar-expand-lg py-3 bg-white" style="position: sticky; top: 0; z-index: 999;">
-        <div class="container ">
-            <div class="d-flex justify-content-center  gap-2  gap-mobile-12em">
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" style="border: none;">
-                    <img src="{{ asset('assets/img/humb-menu.svg') }}" style="width: 24px;" alt="">
-                </button>
-                <a class="navbar-brand" href="/">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah Logo" style="width: 120px; height: 80px">
-                </a>
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="/">{{ __('web.home') }}</a></li>
+            <a class="navbar-brand" href="/">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah" style="width: 100px; height: auto;">
+            </a>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                {{ __('web.category') }}
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item"
-                                        href="{{ route('product.List') }}">{{ __('web.all_products') }}</a></li>
-                                @foreach ($categories as $category)
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('product.List', ['id' => $category->id]) }}">{{ $category->name }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="/">{{ __('web.home') }}</a></li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle px-3" href="#" role="button">
+                            {{ __('web.category') }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('product.List') }}"><strong>{{ __('web.all_products') }}</strong></a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            @foreach ($categories as $category)
+                                <li><a class="dropdown-item" href="{{ route('product.List', ['id' => $category->id]) }}">{{ $category->name }}</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                </ul>
             </div>
 
-            {{-- Right Side Icons --}}
-            <div class="d-flex align-items-center gap-md-4 gap-mobile-4_4em">
-                <a href="{{ route('cart.index') }}">
-                    <div class="position-relative">
-                        <img src="{{ asset('assets/img/cart.svg') }}" style="width: 22px;" alt="">
-                        <span
-                            class="position-absolute top-100 start-100 translate-middle badge-cart rounded-pill cart-Notify">
-                            {{ $cartCount > 9 ? '+9' : $cartCount }}
-                        </span>
-                    </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="#" class="text-dark" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="fa-solid fa-magnifying-glass fs-5"></i>
                 </a>
-
-                <a onclick="openSearchPopup()" id="openPopupBtn">
-                    <img src="{{ asset('assets/img/search.svg') }}" style="width: 29px;" alt="">
+                <a href="{{ route('cart.index') }}" class="text-dark position-relative">
+                    <i class="fa-solid fa-bag-shopping fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge-cart">{{ $cartCount ?? 0 }}</span>
                 </a>
-
-                <a href="/user/profile">
-                    <img src="{{ asset('assets/img/user.svg') }}" style="width: 29px;" alt="">
-                </a>
-
-                {{-- Language Switcher --}}
-                <div>
-                    <a class="text-decoration-none me-2 {{ app()->getLocale() == 'en' ? 'fw-bold text-primary' : 'text-black' }}"
-                        href="{{ url('/lang/en') }}">EN</a>
-                    |
-                    <a class="text-decoration-none ms-2 {{ app()->getLocale() == 'ar' ? 'fw-bold text-primary' : 'text-black' }}"
-                        href="{{ url('/lang/ar') }}">العربية</a>
+                <div class="d-none d-md-flex gap-2 ms-2 small fw-bold">
+                    <a href="{{ url('/lang/en') }}" class="text-decoration-none {{ app()->getLocale() == 'en' ? 'text-dark' : 'text-muted' }}">EN</a>
+                    <a href="{{ url('/lang/ar') }}" class="text-decoration-none {{ app()->getLocale() == 'ar' ? 'text-dark' : 'text-muted' }}">AR</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    {{-- Search Popup --}}
-    <div id="searchPopup" class="popup d-none">
-        <div class="popup-content">
-            <span class="close-btn" onclick="closeSearchPopup()">&times;</span>
-            <h3>{{ __('web.search') }}</h3>
-
-            <form method="POST" action="{{ route('product.List') }}">
-                @csrf
-                <input type="text" id="searchInput" name="search" placeholder="{{ __('web.search_placeholder') }}"
-                    required>
-                <button class="btn btn-primary" type="submit">{{ __('web.search') }}</button>
-            </form>
+    <div class="offcanvas {{ app()->getLocale() == 'ar' ? 'offcanvas-end' : 'offcanvas-start' }}" tabindex="-1" id="mobileMenu">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold">MENU</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column gap-3">
+                <li class="nav-item border-bottom pb-2"><a class="nav-link p-0 fs-5" href="/">{{ __('web.home') }}</a></li>
+                <li class="nav-item">
+                    <p class="text-muted small mb-2 fw-bold text-uppercase">{{ __('web.category') }}</p>
+                    <div class="list-group list-group-flush ps-2">
+                        <a href="{{ route('product.List') }}" class="list-group-item list-group-item-action border-0">{{ __('web.all_products') }}</a>
+                        @foreach ($categories as $category)
+                            <a href="{{ route('product.List', ['id' => $category->id]) }}" class="list-group-item list-group-item-action border-0">{{ $category->name }}</a>
+                        @endforeach
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 
-    {{-- Popup Styles --}}
-    <style>
-        .popup {
-            position: fixed;
-            z-index: 999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    <div class="modal fade modal-search-overlay" id="searchModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-header border-0"><button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body d-flex align-items-center">
+                    <form method="POST" action="{{ route('product.List') }}" class="container text-center">
+                        @csrf
+                        <input type="text" name="search" class="search-input-full" placeholder="{{ __('web.search_placeholder') }}" required autofocus>
+                        <button type="submit" class="btn btn-outline-light mt-5 px-5 py-3 rounded-pill fw-bold text-uppercase">{{ __('web.search') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        .popup-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .close-btn {
-            color: #aaa;
-            font-size: 24px;
-            float: right;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-btn:hover {
-            color: black;
-        }
-
-        @media (max-width: 600px) {
-            .popup-content {
-                width: 90%;
-                padding: 15px;
-            }
-
-            .close-btn {
-                font-size: 20px;
-            }
-        }
-    </style>
-
-    {{-- Popup Script --}}
-    <script>
-        function openSearchPopup() {
-            document.getElementById('searchPopup').classList.remove('d-none');
-        }
-        function closeSearchPopup() {
-            document.getElementById('searchPopup').classList.add('d-none');
-        }
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
-<style>
-    @media (max-width: 767.98px) {
-        .gap-mobile-12em {
-            gap: 11.5em !important;
-        }
-        .navbar-brand{
-            margin: 10px !important;
-        }
-
-        .gap-mobile-4_4em {
-            gap: 3.8em !important;
-        }
-  
-    }
-
-    @media (min-width: 768px) {
-        .gap-desktop-2 {
-            gap: 0.5rem !important; /* Bootstrap gap-2 = 0.5rem */
-        }
-
-        .gap-desktop-3 {
-            gap: 1rem !important; /* Bootstrap gap-3 = 1rem */
-        }
-    }
-</style>

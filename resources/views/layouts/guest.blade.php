@@ -18,6 +18,7 @@
         <!-- Styles -->
         @livewireStyles
                     <link rel="stylesheet" href="https://hayahfashion.net/public/build/assets/app-B6b7m2dX.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     </head>
     <body>
@@ -27,6 +28,8 @@
 
         @livewireScripts
     </body>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://hayahfashion.net/public/build/assets/app-z-Rg4TxU.js"></script>
 
 </html>

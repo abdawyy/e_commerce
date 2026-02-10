@@ -6,7 +6,7 @@
 @php $isRtl = app()->getLocale() === 'ar'; @endphp
 
 <main id="main">
-    <div class="container">
+    <div class="">
         <div class="row pt-4">
             <div class="pagetitle">
                 <h1>{{ __('products.title') }}</h1>

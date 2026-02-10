@@ -1,35 +1,96 @@
-<footer class="bg-black text-light">
-    <div class="container py-3">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-12 col-md-6 text-center text-md-start">
-                <p class="mb-0">{!! __('web.footer_rights') !!}</p>
+<footer class="bg-black text-light border-top border-secondary">
+    <div class="container py-5">
+        <div class="row gy-4 align-items-center">
+            
+            <div class="col-12 col-md-4 text-center text-md-start">
+                <h5 class="fw-bold letter-spacing-2 mb-2">HAYAH</h5>
+                <p class="mb-0 small text-white-50">
+                    {!! __('web.footer_rights') !!}
+                </p>
             </div>
-            <div class="col-12 col-md-6 pt-md-0 pt-2">
-                <div class="d-flex align-items-center gap-4 justify-content-md-end justify-content-center">
-<!-- Social Media Icons -->
-<a href="https://www.instagram.com/hayah.homewear?igsh=MW1mYjI5MzVhM3dmdg%3D%3D&utm_source=qr" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="30" height="30">
-</a>
 
-<a href="https://www.facebook.com/share/15RqUysyS2/?mibextid=wwXIfr" target="_blank">
-    <img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook" width="30" height="30">
-</a>
-
-                    <a href="/contact" class="text-light">{{ __('web.cookies') }}</a>
-                    {{-- <a href="/legal" class="text-light">{{ __('web.privacy_title') }}</a> --}}
-
+            <div class="col-12 col-md-4 text-center">
+                <div class="d-flex justify-content-center gap-4">
+                    <a href="https://www.instagram.com/hayah.homewear" target="_blank" class="social-link">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+                    </a>
+                    <a href="https://www.facebook.com/share/..." target="_blank" class="social-link">
+                        <img src="https://cdn-icons-png.flaticon.com/512/145/145802.png" alt="Facebook">
+                    </a>
                 </div>
             </div>
+
+            <div class="col-12 col-md-4 text-center text-md-end">
+                <div class="d-flex justify-content-center justify-content-md-end gap-3 small">
+                    <a href="/contact" class="footer-link">{{ __('web.cookies') }}</a>
+                    <span class="text-white-50">|</span>
+                    <a href="/privacy" class="footer-link">{{ __('web.privacy_title') }}</a>
+                </div>
+            </div>
+
         </div>
     </div>
 </footer>
-<script src={{ asset("assets/js/bootstrap.bundle.min.js")}}></script>
-<script src={{ asset("assets/js/main.js")}}></script>
-<!-- Toastify CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css">
 
-<!-- Toastify JS -->
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<style>
+    /* High-End Design Touches */
+    .letter-spacing-2 { letter-spacing: 2px; }
+    
+    .social-link img {
+        width: 24px;
+        height: 24px;
+        filter: invert(1); /* Makes black icons pure white */
+        transition: all 0.3s ease;
+        opacity: 0.7;
+    }
+
+    .social-link:hover img {
+        opacity: 1;
+        transform: translateY(-3px);
+    }
+
+    .footer-link {
+        color: rgba(255,255,255,0.6);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+
+    .footer-link:hover {
+        color: #fff;
+    }
+
+</style>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{{ asset('assets/js/main.js') }}"></script>
 
+<script>
+    $(document).ready(function() {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: "toast-top-center",
+            timeOut: 4000
+        };
+        window.__flashShown = window.__flashShown || {};
+        @if(session('success'))
+            if (!window.__flashShown.success) {
+                toastr.success("{{ session('success') }}");
+                window.__flashShown.success = true;
+            }
+        @endif
+
+        @if(session('error'))
+            if (!window.__flashShown.error) {
+                toastr.error("{{ session('error') }}");
+                window.__flashShown.error = true;
+            }
+        @endif
+    });
+</script>

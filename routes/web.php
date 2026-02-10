@@ -29,6 +29,9 @@ Route::get('/legal', function () {
     return view('legal');
 })->name('legal');
 
+Route::get('/', function () {
+    return view('index');
+})->name('home');
 
 Route::get('/lang/{lang}', function ($lang) {
     if (!in_array($lang, ['en', 'ar'])) {
@@ -36,14 +39,22 @@ Route::get('/lang/{lang}', function ($lang) {
     }
 
     session()->put('locale', $lang);
-    return redirect()->route('home');
 
+    // Get previous URL
+    $previous = url()->previous();
+
+    // Check if previous URL is on our domain
+    if (parse_url($previous, PHP_URL_HOST) === request()->getHost()) {
+        return redirect($previous);
+    }
+
+    // Otherwise, redirect to home
+    return redirect('/');
 });
 
 
-Route::get('/', function () {
-    return view('index');
-})->name('home');
+
+
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/send-contact', [ContactController::class, 'send'])->name('contact.send');
 Route::get('product/show/{id}', [ProductController::class, 'productWebShow'])->name('product.show');

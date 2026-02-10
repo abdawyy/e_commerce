@@ -1,16 +1,18 @@
 let sidebarBtn = document.querySelector(".toggle-sidebar-btn");
 let sidebar = document.getElementById("sidebar");
 
-sidebarBtn.addEventListener("click", () => {
-    document.body.classList.toggle("toggle-sidebar");
-});
+if (sidebarBtn) {
+    sidebarBtn.addEventListener("click", () => {
+        document.body.classList.toggle("toggle-sidebar");
+    });
+}
 
 // image view-------------------------------------------------//
 // -----------------------------------------------------------//
 
 // Bootstrap Toast initialization
 let toastElement = document.getElementById("error-toast");
-let toast = new bootstrap.Toast(toastElement);
+let toast = toastElement ? new bootstrap.Toast(toastElement) : null;
 
 let input1 = document.getElementById("file1");
 
@@ -27,6 +29,7 @@ let addSubImageBtn = document.getElementById("addSubImageBtn");
 
 ImageArray = [];
 
+if (input1) {
 input1.addEventListener("change", () => {
     if (ImageArray.length < 4) {
         const files = input1.files;
@@ -54,7 +57,9 @@ input1.addEventListener("change", () => {
         displayToastErrorMessage("You can't upload more than 4 images.");
     }
 });
+}
 
+if (inputDiv) {
 inputDiv.addEventListener("drop", (e) => {
     if (ImageArray.length < 4) {
         e.preventDefault();
@@ -83,7 +88,9 @@ inputDiv.addEventListener("drop", (e) => {
         uploadImages();
     } else {}
 });
+}
 
+if (addSubImageBtn) {
 addSubImageBtn.addEventListener("click", () => {
     if (ImageArray.length < 4) {
         input1.disabled = false;
@@ -94,6 +101,7 @@ addSubImageBtn.addEventListener("click", () => {
         displayToastErrorMessage("You can't upload more than 4 images.");
     }
 });
+}
 
 function displayQueuedImage() {
     // if (ImageArray.length === 0) return;
@@ -160,15 +168,20 @@ function uploadImages() {
 }
 
 function displayToastErrorMessage(message) {
+    if (!toast) return;
     let toastBody = document.querySelector("#error-toast .toast-body");
-    toastBody.innerText = message;
+    if (toastBody) {
+        toastBody.innerText = message;
+    }
     toast.show();
 }
 
 // Optional: Function to clear any existing error messages from the toast
 function clearToastErrorMessage() {
     let toastBody = document.querySelector("#error-toast .toast-body");
-    toastBody.innerText = "";
+    if (toastBody) {
+        toastBody.innerText = "";
+    }
 }
 
 // ///////////////////////////

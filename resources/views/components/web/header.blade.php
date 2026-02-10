@@ -12,6 +12,8 @@
     </title>
 
     <!-- Dynamic Description -->
+    <link rel="canonical" href="{{ url('/') }}">
+
     <meta name="description" content="{{ app()->getLocale() == 'ar' ? 'تسوق الآن من حياة لأحدث صيحات الموضة والأزياء المحتشمة.' : 'Shop now at Hayah for the latest in modern and modest fashion.' }}">
     <meta name="keywords" content="{{ app()->getLocale() == 'ar' ? 'حياة, ملابس, أزياء, موضة, نسائية' : 'Hayah, fashion, clothing, modern, modest, women' }}">
     <meta name="author" content="Hayah Fashion">

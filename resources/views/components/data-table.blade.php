@@ -1,40 +1,47 @@
 @php
     $isArabic = app()->getLocale() === 'ar';
+    $languageLabel = __('table.language');
+    if ($languageLabel === 'table.language') {
+        $languageLabel = 'Language';
+    }
 @endphp
 
-<div class="container {{ $isArabic ? 'text-end' : '' }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
+<div class="container-fluid px-0 {{ $isArabic ? 'text-end' : '' }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
     {{-- Validation Messages --}}
     @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success shadow-sm">
             {{ session('success') }}
         </div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger shadow-sm">
             {{ session('error') }}
         </div>
     @endif
 
-    {{-- Language Switch --}}
-    <div class="d-flex justify-content-{{ $isArabic ? 'start' : 'end' }} mb-3">
-        <a href="{{ url('/lang/en') }}" class="mx-2 {{ !$isArabic ? 'fw-bold text-primary' : 'text-dark' }}">EN</a> |
-        <a href="{{ url('/lang/ar') }}" class="mx-2 {{ $isArabic ? 'fw-bold text-primary' : 'text-dark' }}">العربية</a>
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-3">
+        {{-- Language Switch --}}
+        <div class="d-flex align-items-center gap-2 small text-muted">
+            <span class="text-uppercase">{{ $languageLabel }}:</span>
+            <a href="{{ url('/lang/en') }}" class="{{ !$isArabic ? 'fw-bold text-primary' : 'text-dark' }}">EN</a>
+            <span class="text-muted">|</span>
+            <a href="{{ url('/lang/ar') }}" class="{{ $isArabic ? 'fw-bold text-primary' : 'text-dark' }}">العربية</a>
+        </div>
+
+        {{-- Search Form --}}
+        <form action="{{ url()->current() }}" method="GET" class="w-100 w-md-auto">
+            <div class="input-group search-group">
+                <input type="text" name="search" class="form-control"
+                       placeholder="{{ __('table.search_placeholder') }}" value="{{ request('search') }}">
+                <button class="btn btn-dark" type="submit">{{ __('table.search_button') }}</button>
+            </div>
+        </form>
     </div>
 
-    {{-- Search Form --}}
-    <form action="{{ url()->current() }}" method="GET"
-          class="mb-3 d-flex justify-content-{{ $isArabic ? 'start' : 'end' }}">
-        <div class="input-group w-25">
-            <input type="text" name="search" class="form-control mx-2"
-                   placeholder="{{ __('table.search_placeholder') }}" value="{{ request('search') }}">
-            <button class="btn btn-dark" type="submit">{{ __('table.search_button') }}</button>
-        </div>
-    </form>
-
     {{-- Table --}}
-    <div class="table-responsive">
-        <table class="table align-middle">
+    <div class="table-responsive shadow-sm rounded-4">
+        <table class="table table-modern align-middle mb-0">
             <thead>
                 <tr>
                     @foreach ($headers as $header)
@@ -53,25 +60,27 @@
                     @foreach ($rows as $row)
                         <tr>
                             @foreach ($headers as $header)
-                                <td>
+                                <td data-label="{{ __('table.headers.' . strtolower($header)) ?? $header }}">
                                     @if($header === 'Action')
-                                        <a class="btn btn-primary" href="{{ $url }}/edit/{{ $row['ID'] }}">
-                                            {{ __('table.view') }}
-                                        </a>
-
-                                        @if (isset($row['is_active']))
-                                            <a class="btn {{ $row['is_active'] == 1 ? 'btn-success' : 'btn-warning' }}"
-                                               href="{{ $url }}/status/{{ $row['ID'] }}">
-                                                {{ $row['is_active'] == 1 ? __('table.status_active') : __('table.status_inactive') }}
+                                        <div class="table-actions {{ $isArabic ? 'justify-content-start' : 'justify-content-end' }}">
+                                            <a class="btn btn-primary btn-sm" href="{{ $url }}/edit/{{ $row['ID'] }}">
+                                                {{ __('table.view') }}
                                             </a>
-                                        @endif
 
-                                        @if (isset($row['is_highest']))
-    <a class="btn {{ $row['is_highest'] == 1 ? 'btn-primary' : 'btn-secondary' }}"
-       href="{{ route('admin.products.toggleHighestStatus', $row['ID']) }}">
-        {{ $row['is_highest'] == 1 ? __('table.status_highest') : __('table.status_normal') }}
-    </a>
-@endif
+                                            @if (isset($row['is_active']))
+                                                <a class="btn btn-sm {{ $row['is_active'] == 1 ? 'btn-success' : 'btn-warning' }}"
+                                                   href="{{ $url }}/status/{{ $row['ID'] }}">
+                                                    {{ $row['is_active'] == 1 ? __('table.status_active') : __('table.status_inactive') }}
+                                                </a>
+                                            @endif
+
+                                            @if (isset($row['is_highest']))
+                                                <a class="btn btn-sm {{ $row['is_highest'] == 1 ? 'btn-primary' : 'btn-secondary' }}"
+                                                   href="{{ route('admin.products.toggleHighestStatus', $row['ID']) }}">
+                                                    {{ $row['is_highest'] == 1 ? __('table.status_highest') : __('table.status_normal') }}
+                                                </a>
+                                            @endif
+                                        </div>
                                     @else
                                         {{ $row[$header] ?? '' }}
                                     @endif
