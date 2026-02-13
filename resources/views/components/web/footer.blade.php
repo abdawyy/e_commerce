@@ -20,13 +20,13 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-4 text-center text-md-end">
+            {{-- <div class="col-12 col-md-4 text-center text-md-end">
                 <div class="d-flex justify-content-center justify-content-md-end gap-3 small">
                     <a href="/contact" class="footer-link">{{ __('web.cookies') }}</a>
                     <span class="text-white-50">|</span>
                     <a href="/privacy" class="footer-link">{{ __('web.privacy_title') }}</a>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>
@@ -60,6 +60,45 @@
 
     .footer-link:hover {
         color: #fff;
+    }
+
+    /* Global Toastr Styling */
+    #toast-container > .toast {
+        background-color: #111 !important;
+        color: #fff !important;
+        opacity: 1 !important;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.25) !important;
+        border-radius: 10px !important;
+        background-image: none !important;
+    }
+
+    #toast-container > .toast-success {
+        background-color: #1f9d55 !important;
+        background-image: none !important;
+    }
+
+    #toast-container > .toast-error {
+        background-color: #dc3545 !important;
+        background-image: none !important;
+    }
+
+    #toast-container > .toast-warning {
+        background-color: #f59e0b !important;
+        background-image: none !important;
+    }
+
+    #toast-container > .toast-info {
+        background-color: #0ea5e9 !important;
+        background-image: none !important;
+    }
+
+    #toast-container > .toast .toast-message {
+        color: #fff !important;
+    }
+
+    #toast-container > .toast .toast-close-button {
+        color: #fff !important;
+        opacity: 0.8 !important;
     }
 
 </style>

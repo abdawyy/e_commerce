@@ -16,7 +16,7 @@
             @foreach ($elements as $element)
                 {{-- "Three Dots" Separator --}}
                 @if (is_string($element))
-                    <li class="page-item disabled">
+                    <li class="page-item disabled d-none d-md-inline-flex">
                         <span class="page-link text-black" style="color: black;">{{ $element }}</span>
                     </li>
                 @endif
@@ -25,11 +25,11 @@
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
-                            <li class="page-item active">
+                            <li class="page-item active d-inline-flex">
                                 <span class="page-link text-black" style="color: black; background-color: #e9ecef; border-color: #dee2e6;">{{ $page }}</span>
                             </li>
                         @else
-                            <li class="page-item">
+                            <li class="page-item d-none d-md-inline-flex">
                                 <a class="page-link text-black" href="{{ $url }}" style="color: black;">{{ $page }}</a>
                             </li>
                         @endif

@@ -113,6 +113,7 @@ a {
     width: 280px;
     z-index: 996;
     transition: all 0.3s;
+    transform: translateX(0);
     padding: 30px 30px 30px 20px;
     overflow-y: auto;
     scrollbar-width: thin;
@@ -120,6 +121,11 @@ a {
     /* box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1); */
     background-color: #fff;
     border-right: #000000 1px solid;
+}
+
+[dir="rtl"] .sidebar {
+    right: 0;
+    left: auto;
 }
 
 @media (max-width: 1199px) {
@@ -186,7 +192,8 @@ a {
     }
 
     .toggle-sidebar .sidebar {
-        left: -280px;
+        left: 0;
+        transform: translateX(-100%);
     }
 }
 
@@ -197,8 +204,9 @@ a {
 }
 
 [dir="rtl"].toggle-sidebar .sidebar {
-    right: -280px;
+    right: 0;
     left: auto;
+    transform: translateX(100%);
 }
 
 .sidebar-nav {
@@ -650,3 +658,4 @@ a {
 .modal-content{
     border-radius: var(--border-radius);
 }
+

@@ -112,6 +112,9 @@ body {
 #home .hero:hover::after {
     opacity: 0.8;
 }
+    .pagination {
+        justify-content: center !important;
+    }
 
 @media (max-width: 992px) {
     #home .hero {
@@ -240,12 +243,7 @@ body {
     transform: translateY(-5px);
 }
 
-/* --- Footer --- */
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
+
 
 /* --- Modern Ecommerce Enhancements --- */
 :root {
@@ -296,6 +294,18 @@ section {
     border-radius: 14px;
     border: 1px solid var(--ecom-border);
     box-shadow: var(--ecom-shadow);
+}
+
+/* Filter dropdown responsive positioning */
+@media (max-width: 991px) {
+    #filterDropdown .dropdown-menu {
+        min-width: 180px !important;
+    }
+    
+    #filterDropdown .dropdown-menu-end {
+        right: 0 !important;
+        left: auto !important;
+    }
 }
 
 .section-title h2 {
@@ -677,8 +687,4 @@ body {
 
 .toast { border: 2px solid green; color: green; }
 
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
+

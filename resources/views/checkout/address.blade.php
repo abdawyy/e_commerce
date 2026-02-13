@@ -104,11 +104,6 @@
                                 <input type="text" name="promo_code" id="promo_code"
                                        class="form-control @error('promo_code') is-invalid @enderror"
                                        value="{{ old('promo_code') }}" placeholder="{{ __('checkout.enter_promo') }}" />
-                                @if (session('success'))
-                                    <div class="text-success">{{ session('success') }}</div>
-                                @elseif (session('error'))
-                                    <div class="text-danger">{{ session('error') }}</div>
-                                @endif
                                 @error('promo_code')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
 

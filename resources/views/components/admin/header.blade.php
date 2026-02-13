@@ -30,14 +30,4 @@
         right: 0;
         left: auto;
     }
-
-    [dir="rtl"] #main {
-        margin-right: 280px; /* same as sidebar width */
-        margin-left: 0;
-    }
-
-    [dir="ltr"] #main {
-        margin-left: 280px;
-        margin-right: 0;
-    }
 </style>

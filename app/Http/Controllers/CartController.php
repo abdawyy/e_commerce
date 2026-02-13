@@ -153,7 +153,7 @@ class CartController extends Controller
         return response()->json([
             'success' => false,
             'message' => "Cannot add more than available stock for: {$productName}. Only {$availableStock} left.",
-        ], 400);
+        ]);
     }
 
 

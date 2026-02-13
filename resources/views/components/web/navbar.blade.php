@@ -118,7 +118,7 @@
                 </a>
                 <a href="{{ route('cart.index') }}" class="text-dark position-relative">
                     <i class="fa-solid fa-bag-shopping fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge-cart">{{ $cartCount ?? 0 }}</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge-cart cart-count">{{ $cartCount ?? 0 }}</span>
                 </a>
                 <div class="d-none d-md-flex gap-2 ms-2 small fw-bold">
                     <a href="{{ url('/lang/en') }}" class="text-decoration-none {{ app()->getLocale() == 'en' ? 'text-dark' : 'text-muted' }}">EN</a>

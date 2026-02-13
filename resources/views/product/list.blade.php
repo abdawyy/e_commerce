@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 <head>
@@ -50,6 +51,16 @@
         /* Footer Inversion */
         .social-icon img { filter: invert(1); opacity: 0.7; transition: 0.3s; }
         .social-icon:hover img { opacity: 1; }
+        @media (max-width: 991px) {
+    #filterDropdown .dropdown-menu {
+        min-width: 180px !important;
+    }
+    
+    #filterDropdown .dropdown-menu-end {
+        right: 0 !important;
+        left: auto !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -80,11 +91,11 @@
                 <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap">
                     <h1 class="fw-bold h2 mb-0">{{ $id ? $categoryName->name : __('web.all_products') }}</h1>
 
-                    <div class="dropdown d-lg-none">
-                        <button class="btn btn-dark rounded-pill px-4" type="button" data-bs-toggle="dropdown">
+                    <div class="dropdown d-lg-none" id="filterDropdown">
+                        <button id="filterToggle" class="btn btn-dark rounded-pill px-4" type="button" aria-expanded="false">
                             <i class="fa-solid fa-sliders me-2"></i> {{ __('web.filter') }}
                         </button>
-                        <ul class="dropdown-menu shadow border-0">
+                        <ul id="filterMenu" class="dropdown-menu dropdown-menu-end shadow border-0">
                             <li><a class="dropdown-item" href="{{ route('product.List') }}">{{ __('web.all_products') }}</a></li>
                             @foreach ($categories as $category)
                                 <li><a class="dropdown-item" href="{{ url('/product/list/category/' . $category->id) }}">{{ $category->name }}</a></li>
@@ -132,7 +143,31 @@
 
 <x-web.footer />
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggle = document.getElementById('filterToggle');
+        const menu = document.getElementById('filterMenu');
+        const container = document.getElementById('filterDropdown');
 
+        if (!toggle || !menu || !container) return;
+
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const isOpen = menu.classList.contains('show');
+            menu.classList.toggle('show', !isOpen);
+            container.classList.toggle('show', !isOpen);
+            toggle.setAttribute('aria-expanded', (!isOpen).toString());
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!container.contains(e.target)) {
+                menu.classList.remove('show');
+                container.classList.remove('show');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

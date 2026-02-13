@@ -7,19 +7,6 @@
 @endphp
 
 <div class="container-fluid px-0 {{ $isArabic ? 'text-end' : '' }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
-    {{-- Validation Messages --}}
-    @if(session('success'))
-        <div class="alert alert-success shadow-sm">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger shadow-sm">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-3">
         {{-- Language Switch --}}
         <div class="d-flex align-items-center gap-2 small text-muted">

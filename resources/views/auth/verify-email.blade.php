@@ -18,11 +18,6 @@
             {{ __('auth.verify_email_message') }}
         </div>
 
-        @if (session('status') === 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('auth.verification_link_resent') }}
-            </div>
-        @endif
 
         <div class="mt-4 flex items-center justify-between">
             <form method="POST" action="{{ route('verification.send') }}">
