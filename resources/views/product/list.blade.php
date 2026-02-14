@@ -330,7 +330,7 @@
                                 <div class="product-wrapper">
                                     <a href="{{ route('product.show', [$product->id]) }}">
                                         <img src="{{ $product->productImages->isNotEmpty() ? asset('storage/' . $product->productImages->first()->images) : asset('assets/img/default.jpg') }}"
-                                             class="list-product-img" alt="{{ $product->name }}">
+                                            class="img-fluid list-product-img" alt="{{ $product->name }}" loading="lazy" decoding="async">
                                     </a>
                                 </div>
 

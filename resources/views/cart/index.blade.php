@@ -76,8 +76,8 @@ function getCartQuantity($item) {
                                      style="width:110px; height:110px; flex-shrink:0;">
                                     @if (!empty($product->productImages->first()?->images))
                                         <img src="{{ asset('storage/' . $product->productImages->first()->images) }}"
-                                             alt="{{ $product->name ?? '' }}"
-                                             class="img-fluid" style="max-height:100%; max-width:100%;">
+                                            alt="{{ $product->name ?? '' }}"
+                                            class="img-fluid" style="max-height:100%; max-width:100%;" loading="lazy" decoding="async">
                                     @else
                                         <span class="text-muted small">No Image</span>
                                     @endif

@@ -121,14 +121,14 @@
                     <div class="img-main-container mb-2">
                         <img id="mainImage" class="img-oneProduct pointer"
                              src="{{ $product->productImages->first() ? asset('storage/' . $product->productImages->first()->images) : asset('assets/img/default.jpg') }}"
-                             onclick="openImage(this)">
+                             alt="{{ $product->name }}" loading="lazy" decoding="async" onclick="openImage(this)">
                     </div>
                     
                     <div class="thumb-scroll-container">
                         @foreach ($product->productImages as $productImage)
                             <img class="img-oneProduct-sub {{ $loop->first ? 'img-selected' : '' }}"
                                  src="{{ asset('storage/' . $productImage->images) }}" 
-                                 onclick="changeMainImage(this)">
+                                 alt="{{ $product->name }} thumbnail" loading="lazy" decoding="async" onclick="changeMainImage(this)">
                         @endforeach
                     </div>
                 </div>

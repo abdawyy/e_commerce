@@ -28,20 +28,27 @@
         transition: all 0.4s ease;
     }
 
+    /* Image wrapper enforces a consistent aspect ratio and the image fills it */
     .image-wrapper {
         position: relative;
         overflow: hidden;
         border-radius: 15px;
         background-color: var(--soft-gray);
+        aspect-ratio: 4 / 5; /* container keeps consistent portrait ratio */
     }
 
+    .image-wrapper img,
     .product-img {
-        transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        position: absolute;
+        inset: 0;
         width: 100%;
-        aspect-ratio: 4 / 5; /* Modern portrait ratio */
+        height: 100%;
         object-fit: cover;
+        display: block;
+        transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
+    .product-card:hover .image-wrapper img,
     .product-card:hover .product-img {
         transform: scale(1.08);
     }
@@ -140,7 +147,7 @@
 
 <section id="home" class="pt-4 pb-5">
     <div class="container">
-        <div class="hero" style="background-image: url('{{ asset('assets/img/main2.jpg') }}');">
+        <div class="hero" style="background-image: url('{{ asset('assets/img/main2.jpeg') }}');">
             <div class="hero-content text-white">
                 <span class="text-uppercase fw-bold mb-2 d-block tracking-widest" style="letter-spacing: 3px; font-size: 0.8rem;">New Season Arrival</span>
                 <h1 class="display-2 fw-bold mb-3">{{ __('web.brand_collection_title') }}</h1>
@@ -179,19 +186,13 @@
                                             @endif
                                             
                                             <a href="{{ url('product/show/' . $product->id) }}">
-                                                @if ($product->productImages->isNotEmpty())
-                                                    <img src="{{ asset('storage/' . $product->productImages->first()->images) }}"
-                                                         class="product-img" alt="{{ $product->name }}">
-                                                @endif
+                                                  @if ($product->productImages->isNotEmpty())
+                                                  <img src="{{ asset('storage/' . $product->productImages->first()->images) }}"
+                                                      class="product-img img-fluid" alt="{{ $product->name }}" loading="lazy" decoding="async">
+                                               @endif
                                             </a>
                                             
-                                            <form action="#" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $product->id }}">
-                                                <button type="submit" class="btn-cart-overlay">
-                                                    <i class="fa-solid fa-plus fs-5"></i>
-                                                </button>
-                                            </form>
+                                     
                                         </div>
 
                                         <div class="pt-3">
@@ -231,7 +232,7 @@
     <div class="container">
         <div class="row g-4 justify-content-center">
             <div class="col-12 col-md-6">
-                <div class="category-box" style="background-image: url('{{ asset('assets/img/main.jpg') }}');">
+                <div class="category-box" style="background-image: url('{{ asset('assets/img/main.jpeg') }}');">
                     <div class="category-overlay">
                         <h3 class="fw-bold text-white display-4 mb-3">{{ __('web.top') }}</h3>
                         <a href="{{ url('product/list/category/1') }}" class="btn btn-light px-4 py-2 rounded-pill fw-bold">
@@ -241,7 +242,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-6">
-                <div class="category-box" style="background-image: url('{{ asset('assets/img/main3.jpg') }}');">
+                <div class="category-box" style="background-image: url('{{ asset('assets/img/main3.jpeg') }}');">
                     <div class="category-overlay">
                         <h3 class="fw-bold text-white display-4 mb-3">{{ __('web.Long Sleeve') }}</h3>
                         <a href="{{ url('product/list/category/5') }}" class="btn btn-light px-4 py-2 rounded-pill fw-bold">

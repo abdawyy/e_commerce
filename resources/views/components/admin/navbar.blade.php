@@ -8,7 +8,7 @@
             </button>
 
             <a class="navbar-brand" href="/">
-                <img src="/assets/img/logo.png" alt="" style="width: 120px; height: 60px">
+                <img src="/assets/img/logo.png" alt="Admin - Hayah" class="img-fluid" style="width: 120px; height: auto;" loading="lazy" decoding="async">
             </a>
         </div>
     </div>

@@ -1,5 +1,4 @@
-<a href="/">
-    <a class="navbar-brand" href="/"><img src={{ asset('assets/img/logo.png') }} alt=""
-       style="width: 240px; height: 120px"></a>
+<a class="navbar-brand" href="/">
+    <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah" class="img-fluid" style="width: 240px; height: auto;" loading="lazy" decoding="async">
 </a>
 

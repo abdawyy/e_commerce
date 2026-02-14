@@ -90,7 +90,7 @@
             </button>
 
             <a class="navbar-brand" href="/">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah" style="width: 100px; height: auto;">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah" class="img-fluid" style="width: 100px; height: auto;" loading="lazy" decoding="async">
             </a>
 
             <div class="collapse navbar-collapse">
