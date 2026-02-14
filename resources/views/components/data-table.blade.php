@@ -9,25 +9,44 @@
 <div class="container-fluid px-0 {{ $isArabic ? 'text-end' : '' }}" dir="{{ $isArabic ? 'rtl' : 'ltr' }}">
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-3">
         {{-- Language Switch --}}
-        <div class="d-flex align-items-center gap-2 small text-muted">
+        {{-- <div class="d-flex align-items-center gap-2 small text-muted">
             <span class="text-uppercase">{{ $languageLabel }}:</span>
             <a href="{{ url('/lang/en') }}" class="{{ !$isArabic ? 'fw-bold text-primary' : 'text-dark' }}">EN</a>
             <span class="text-muted">|</span>
             <a href="{{ url('/lang/ar') }}" class="{{ $isArabic ? 'fw-bold text-primary' : 'text-dark' }}">العربية</a>
-        </div>
+        </div> --}}
 
         {{-- Search Form --}}
-        <form action="{{ url()->current() }}" method="GET" class="w-100 w-md-auto">
+        {{-- <form action="{{ url()->current() }}" method="GET" class="w-100 w-md-auto">
             <div class="input-group search-group">
                 <input type="text" name="search" class="form-control"
                        placeholder="{{ __('table.search_placeholder') }}" value="{{ request('search') }}">
                 <button class="btn btn-dark" type="submit">{{ __('table.search_button') }}</button>
             </div>
-        </form>
+        </form> --}}
     </div>
 
     {{-- Table --}}
     <div class="table-responsive shadow-sm rounded-4">
+        <style>
+            .table-modern thead th {
+                background: #f8f9fa;
+                font-weight: 600;
+                border-bottom: 1px solid #e9ecef;
+            }
+            .table-modern tbody td {
+                vertical-align: middle;
+            }
+            .table-actions .btn + .btn {
+                margin-left: .35rem;
+            }
+            .status-badge {
+                padding: .35em .6em;
+                border-radius: .35rem;
+                font-size: .85rem;
+                font-weight: 600;
+            }
+        </style>
         <table class="table table-modern align-middle mb-0">
             <thead>
                 <tr>
@@ -48,7 +67,7 @@
                         <tr>
                             @foreach ($headers as $header)
                                 <td data-label="{{ __('table.headers.' . strtolower($header)) ?? $header }}">
-                                    @if($header === 'Action')
+                                    @if ($header === 'Action')
                                         <div class="table-actions {{ $isArabic ? 'justify-content-start' : 'justify-content-end' }}">
                                             <a class="btn btn-primary btn-sm" href="{{ $url }}/edit/{{ $row['ID'] }}">
                                                 {{ __('table.view') }}
@@ -68,6 +87,18 @@
                                                 </a>
                                             @endif
                                         </div>
+                                    @elseif ($header === 'ID')
+                                        <a href="{{ $url }}/edit/{{ $row['ID'] }}" class="text-decoration-none">#{{ $row['ID'] }}</a>
+                                    @elseif ($header === 'Status')
+                                        @php
+                                            $status = $row['Status'] ?? '';
+                                            $statusClass = 'bg-secondary text-white';
+                                            if (strtolower($status) === 'completed') $statusClass = 'bg-success text-white';
+                                            if (strtolower($status) === 'pending') $statusClass = 'bg-warning text-dark';
+                                            if (strtolower($status) === 'processing') $statusClass = 'bg-info text-white';
+                                            if (strtolower($status) === 'cancelled') $statusClass = 'bg-danger text-white';
+                                        @endphp
+                                        <span class="status-badge {{ $statusClass }}">{{ $row[$header] ?? $status }}</span>
                                     @else
                                         {{ $row[$header] ?? '' }}
                                     @endif

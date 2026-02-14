@@ -62,8 +62,10 @@ class ContactController extends Controller
     }
     public function list(Request $request)
     {
-        // Get the search parameter from the request
+        // Get the filter parameters from the request
         $search = $request->input('search');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
 
         // Define the mapping of headers to fields
         $headerMap = [
@@ -75,8 +77,26 @@ class ContactController extends Controller
             'Created At' => 'created_at',
         ];
 
-        // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = Message::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query
+        // Build query with filters
+        $query = Message::query();
+        
+        // Apply search filter
+        if ($search) {
+            $query = $query->search($search, $headerMap);
+        }
+        
+        // Apply email filter
+        if ($email) {
+            $query = $query->where('email', 'like', '%' . $email . '%');
+        }
+        
+        // Apply phone filter
+        if ($phone) {
+            $query = $query->where('phone', 'like', '%' . $phone . '%');
+        }
+        
+        // Paginate and preserve query parameters
+        $data = $query->paginate(10)->appends(['search' => $search, 'email' => $email, 'phone' => $phone]); // 👈 This preserves filter parameters
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Email', 'Phone', 'Message', 'Created At'];

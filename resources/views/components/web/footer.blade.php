@@ -131,5 +131,14 @@
                 window.__flashShown.error = true;
             }
         @endif
+
+        @if($errors->any())
+            @foreach ($errors->all() as $error)
+                if (!window.__flashShown['err_{{ md5($error) }}']) {
+                    toastr.error("{{ addslashes($error) }}");
+                    window.__flashShown['err_{{ md5($error) }}'] = true;
+                }
+            @endforeach
+        @endif
     });
 </script>

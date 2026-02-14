@@ -69,48 +69,57 @@ function getCartQuantity($item) {
                         $priceTotal = getCartItemPrice($product, $quantity);
                         $size = getProductItemSize($item);
                     @endphp
+                    <div class="card mb-3 shadow-sm rounded-3 border-0">
+                        <div class="card-body p-3">
+                            <div class="d-flex gap-3 align-items-start">
+                                <div class="cart-img rounded-3 overflow-hidden bg-light d-flex align-items-center justify-content-center"
+                                     style="width:110px; height:110px; flex-shrink:0;">
+                                    @if (!empty($product->productImages->first()?->images))
+                                        <img src="{{ asset('storage/' . $product->productImages->first()->images) }}"
+                                             alt="{{ $product->name ?? '' }}"
+                                             class="img-fluid" style="max-height:100%; max-width:100%;">
+                                    @else
+                                        <span class="text-muted small">No Image</span>
+                                    @endif
+                                </div>
 
-                    <div class="card mb-3">
-                    <div class="card-body">
-    <div class="d-flex flex-column flex-md-row align-items-start gap-3">
-        @if (!empty($product->productImages->first()?->images))
-            <img src="{{ asset('storage/' . $product->productImages->first()->images) }}"
-                 alt=""
-                 class="img-fluid"
-                 style="max-width: 100px;">
-        @endif
+                                <div class="flex-grow-1 w-100">
+                                    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
+                                        <div class="me-2">
+                                            <h5 class="card-title mb-1 text-truncate" style="max-width:40ch;">{{ $product->name ?? 'Product' }}</h5>
+                                            <div class="text-muted small">
+                                                <span>{{ __('cart.color') }}: {{ $product->color ?? '-' }}</span>
+                                                &middot;
+                                                <span>{{ __('cart.size') }}: {{ $size }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-end mt-2 mt-md-0">
+                                            <h5 class="fw-bolder mb-1">LE {{ number_format($priceTotal, 2) }}</h5>
+                                            <div class="mt-1">
+                                                <span class="badge bg-secondary">Qty: {{ $quantity }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-        <div class="flex-grow-1 w-100">
-            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between">
-                <h5 class="card-title text-truncate mb-1 fc-black">{{ $product->name ?? 'Product' }}</h5>
-                <h5 class="fw-bolder text-truncate fc-black mb-1">LE {{ number_format($priceTotal, 2) }}</h5>
-            </div>
-
-            <div class="d-flex flex-column pt-1">
-                <p class="text-truncate mb-0 fc-gray">{{ __('cart.color') }}: {{ $product->color ?? '-' }}</p>
-                <p class="text-truncate mb-0 fc-gray">{{ __('cart.size') }}: {{ $size }}</p>
-            </div>
-
-            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between pt-2">
-                <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
-                    <span class="quantity fw-bolder fs-5">{{ $quantity }}</span>
-                </div>
-                <div class="d-flex align-items-center">
-                    @if (!$isGuest)
-                        <a href="{{ route('cart.delete', ['id' => $item->id]) }}">
-                            <i class="fa-regular fa-trash-can pointer fs-4" title="{{ __('cart.delete') }}"></i>
-                        </a>
-                    @else
-                        <a href="{{ route('cart.guest.delete', ['key' => $item->key]) }}">
-                            <i class="fa-regular fa-trash-can pointer fs-4" title="{{ __('cart.delete') }}"></i>
-                        </a>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            {{-- potential quantity controls go here in future --}}
+                                        </div>
+                                        <div>
+                                            @if (!$isGuest)
+                                                <a href="{{ route('cart.delete', ['id' => $item->id]) }}" class="text-danger ms-2" aria-label="{{ __('cart.delete') }}">
+                                                    <i class="fa-regular fa-trash-can fs-5"></i>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('cart.guest.delete', ['key' => $item->key]) }}" class="text-danger ms-2" aria-label="{{ __('cart.delete') }}">
+                                                    <i class="fa-regular fa-trash-can fs-5"></i>
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 @endforeach
             </div>
@@ -118,22 +127,22 @@ function getCartQuantity($item) {
             @if ($total > 0)
                 <div class="col-12 col-lg-5 mb-4">
                     <div style="position: sticky; top: 100px;">
-                        <h5 class="fw-bolder fs-3">{{ __('cart.summary') }}</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="fw-bolder fc-black pb-2">{{ __('cart.your_order') }}</h5>
-                                <div class="d-flex justify-content-between align-items-center pb-3">
-                                    <p class="mb-0">{{ __('cart.subtotal') }}</p>
-                                    <p class="fw-bolder text-truncate fc-black mb-0">LE {{ number_format($subtotal, 2) }}</p>
+                        <h5 class="fw-bolder fs-4 mb-3">{{ __('cart.summary') }}</h5>
+                        <div class="card shadow-sm rounded-3 border-0">
+                            <div class="card-body p-4">
+                                <h6 class="fw-semibold text-muted mb-3">{{ __('cart.your_order') }}</h6>
+                                <div class="d-flex justify-content-between align-items-center pb-2">
+                                    <p class="mb-0 text-muted small">{{ __('cart.subtotal') }}</p>
+                                    <p class="fw-bolder text-truncate mb-0">LE {{ number_format($subtotal, 2) }}</p>
                                 </div>
 
                                 <hr>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="fw-bolder text-truncate fc-black mb-0">{{ __('cart.total') }}</h5>
-                                    <h5 class="fw-bolder text-truncate fc-black mb-0">LE {{ number_format($total, 2) }}</h5>
+                                    <h6 class="fw-bolder mb-0">{{ __('cart.total') }}</h6>
+                                    <h6 class="fw-bolder mb-0">LE {{ number_format($total, 2) }}</h6>
                                 </div>
 
-                                <a href="{{ route('checkout.index') }}" class="solidBtn w-100 mt-3 py-2 gap-3">
+                                <a href="{{ route('checkout.index') }}" class="btn btn-primary w-100 mt-3 py-2">
                                     {{ __('cart.checkout') }}
                                 </a>
                             </div>

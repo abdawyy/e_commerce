@@ -162,8 +162,10 @@ class AdminController extends Controller
     }
     public function orderList(Request $request)
     {
-        // Get the search parameter from the request
+        // Get the filter parameters from the request
         $search = $request->input('search');
+        $status = $request->input('status');
+        $id = $request->input('id');
 
         // Define the mapping of headers to fields
         $headerMap = [
@@ -179,8 +181,26 @@ class AdminController extends Controller
             'Created At' => 'created_at',
         ];
 
-        // Use the search scope defined in the AppTrait
-        $data = orders::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query;
+        // Build query with filters
+        $query = orders::with('user', 'guestUser', 'discountCodes', 'cities');
+
+        // Apply search filter
+        if ($search) {
+            $query = $query->search($search, $headerMap);
+        }
+
+        // Apply id filter (exact match)
+        if ($id) {
+            $query = $query->where('id', $id);
+        }
+        
+        // Apply status filter
+        if ($status) {
+            $query = $query->where('status', $status);
+        }
+
+        // Paginate and preserve query parameters
+        $data = $query->paginate(10)->appends(['search' => $search, 'status' => $status, 'id' => $id]); // 👈 This preserves filter parameters
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Email', 'Total Amount', 'Code', 'City', 'Status', 'Created At', 'Action'];

@@ -45,8 +45,10 @@ class CitiesController extends Controller
     // Method to list types with search functionality
     public function list(Request $request)
     {
-        // Get the search parameter from the request
+        // Get the filter parameters from the request
         $search = $request->input('search');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
 
         // Define the mapping of headers to fields
         $headerMap = [
@@ -56,8 +58,26 @@ class CitiesController extends Controller
             'Created At' => 'created_at',
         ];
 
-        // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = Cities::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query
+        // Build query with filters
+        $query = Cities::query();
+        
+        // Apply search filter
+        if ($search) {
+            $query = $query->search($search, $headerMap);
+        }
+        
+        // Apply min price filter
+        if ($minPrice !== null && $minPrice !== '') {
+            $query = $query->where('price', '>=', $minPrice);
+        }
+        
+        // Apply max price filter
+        if ($maxPrice !== null && $maxPrice !== '') {
+            $query = $query->where('price', '<=', $maxPrice);
+        }
+        
+        // Paginate and preserve query parameters
+        $data = $query->paginate(10)->appends(['search' => $search, 'min_price' => $minPrice, 'max_price' => $maxPrice]); // 👈 This preserves filter parameters
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Price', 'Created At', 'Action'];

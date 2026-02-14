@@ -51,8 +51,10 @@ class discountCodesController extends Controller
     // Method to list types with search functionality
     public function list(Request $request)
     {
-        // Get the search parameter from the request
+        // Get the filter parameters from the request
         $search = $request->input('search');
+        $minDiscount = $request->input('min_discount');
+        $maxDiscount = $request->input('max_discount');
 
         // Define the mapping of headers to fields
         $headerMap = [
@@ -62,8 +64,26 @@ class discountCodesController extends Controller
             'Expiry Date' => 'expiry_date',
         ];
 
-        // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = discountCodes::search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query
+        // Build query with filters
+        $query = discountCodes::query();
+        
+        // Apply search filter
+        if ($search) {
+            $query = $query->search($search, $headerMap);
+        }
+        
+        // Apply min discount filter
+        if ($minDiscount !== null && $minDiscount !== '') {
+            $query = $query->where('discount_percentage', '>=', $minDiscount);
+        }
+        
+        // Apply max discount filter
+        if ($maxDiscount !== null && $maxDiscount !== '') {
+            $query = $query->where('discount_percentage', '<=', $maxDiscount);
+        }
+        
+        // Paginate and preserve query parameters
+        $data = $query->paginate(10)->appends(['search' => $search, 'min_discount' => $minDiscount, 'max_discount' => $maxDiscount]); // 👈 This preserves filter parameters
 
         // Define the headers for the table
         $headers = ['ID', 'Code', 'Discount Percentage', 'Expiry Date', 'Action'];

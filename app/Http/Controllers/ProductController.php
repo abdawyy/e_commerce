@@ -121,8 +121,14 @@ class ProductController extends Controller
     }
     public function list(Request $request)
     {
-        // Get the search parameter from the request
+        // Get the search and filter parameters from the request
         $search = $request->input('search');
+        $category_id = $request->input('category_id');
+        $type_id = $request->input('type_id');
+        $color = $request->input('color');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        $stock_status = $request->input('stock_status');
 
         // Define the mapping of headers to fields
         $headerMap = [
@@ -138,9 +144,63 @@ class ProductController extends Controller
 
         ];
 
-        // Use the search scope defined in the Type model (assuming it's implemented)
-        $data = products::with('category', 'type')->search($search, $headerMap)->paginate(10)->appends(['search' => $search]); // 👈 This preserves the search query
+        // Build the query with filters
+        $query = products::with('category', 'type', 'productItems');
+        
+        // Apply search
+        if ($search) {
+            $query = $query->search($search, $headerMap);
+        }
+        
+        // Apply category filter
+        if ($category_id) {
+            $query = $query->where('category_id', $category_id);
+        }
+        
+        // Apply type filter
+        if ($type_id) {
+            $query = $query->where('type_id', $type_id);
+        }
+        
+        // Apply color filter
+        if ($color) {
+            $query = $query->where('color', $color);
+        }
+        
+        // Apply price range filter
+        if ($minPrice !== null && $minPrice !== '') {
+            $query = $query->where('price', '>=', $minPrice);
+        }
+        if ($maxPrice !== null && $maxPrice !== '') {
+            $query = $query->where('price', '<=', $maxPrice);
+        }
+        
+        // Apply stock status filter
+        if ($stock_status) {
+            if ($stock_status === 'in_stock') {
+                $query = $query->whereHas('productItems', function ($q) {
+                    $q->where('quantity', '>', 0);
+                });
+            } elseif ($stock_status === 'out_of_stock') {
+                $query = $query->where(function ($q) {
+                    $q->whereDoesntHave('productItems')
+                      ->orWhereHas('productItems', function ($q2) {
+                          $q2->where('quantity', '<=', 0);
+                      });
+                });
+            }
+        }
 
+        // Paginate with appends for filter preservation
+        $data = $query->paginate(10)->appends([
+            'search' => $search,
+            'category_id' => $category_id,
+            'type_id' => $type_id,
+            'color' => $color,
+            'min_price' => $minPrice,
+            'max_price' => $maxPrice,
+            'stock_status' => $stock_status
+        ]);
 
         // Define the headers for the table
         $headers = ['ID', 'Name', 'Created At', 'Price', 'Sale', 'Type', 'Description', 'Color', 'Category Name', 'Action'];
@@ -165,8 +225,14 @@ class ProductController extends Controller
 
         $url = $this->url;
 
+        // Get filter options for the view
+        $categories = Category::all();
+        $types = Type::all();
+        $colors = products::distinct()->pluck('color')->filter()->values();
+        $maxProductPrice = products::max('price');
+        
         // Return the view with headers and rows data
-        return view('admin.product.list', compact('headers', 'rows', 'data', 'search', 'url'));
+        return view('admin.product.list', compact('headers', 'rows', 'data', 'search', 'url', 'categories', 'types', 'colors', 'maxProductPrice', 'category_id', 'type_id', 'color', 'minPrice', 'maxPrice', 'stock_status'));
     }
     public function delete($id)
     {
@@ -184,95 +250,113 @@ class ProductController extends Controller
     }
     public function productWebList(Request $request, $id = null)
     {
-        // Check if the request is a POST request
-        if ($request->isMethod('post')) {
-            // Retrieve search criteria from the POST request
-            $search = $request->input('search');
+        // Get filter parameters from the request
+        $search = $request->input('search');
+        $type_id = $request->input('type_id');
+        $color = $request->input('color');
+        $size = $request->input('size');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        $stock_status = $request->input('stock_status');
 
-            // Define the mapping of headers to fields, including related model fields
+        // Base query for products
+        $query = products::with([
+            'category',
+            'type',
+            'orderItems',
+            'shoppingCart',
+            'productItems',
+            'productImages'
+        ])
+            ->where('is_active', 1)
+            ->whereHas('category', function ($q) {
+                $q->where('is_active', 1);
+            })
+            ->whereHas('type', function ($q) {
+                $q->where('is_active', 1);
+            });
 
-            // Default header map if not provided in the request
-            $headerMap = [
-                'ID' => 'id',
-                'Name' => 'name',
-
-
-            ];
-
-
-            // Use the search scope defined in the Type model (assuming it's implemented)
-            $data = products::search($search, $headerMap)
-                ->with([
-                    'category',       // Fetch the associated category
-                    'type',           // Fetch the associated type
-                    'orderItems',     // Fetch the associated order items
-                    'shoppingCart',   // Fetch shopping cart items
-                    'productItems',   // Fetch product items
-                    'productImages'   // Fetch product images
-                ])->where('is_active', 1)
-                ->whereHas('category', function ($query) {
-                    $query->where('is_active', 1);
-                })
-                ->whereHas('type', function ($query) {
-                    $query->where('is_active', 1);
-                })->paginate(10); // Adjust the number to change the items per page
-
-            // Check if a category ID is provided and filter products accordingly
-            if ($id) {
-                $data = products::where('category_id', $id)
-                    ->with(['category', 'type', 'orderItems', 'shoppingCart', 'productItems', 'productImages'])->where('is_active', 1)
-                    ->whereHas('category', function ($query) {
-                        $query->where('is_active', 1);
-                    })
-                    ->whereHas('type', function ($query) {
-                        $query->where('is_active', 1);
-                    })
-                    ->paginate(10);
-            }
-
-            // Fetch all categories to display in the filter (for the sidebar or dropdown)
-            $categories = Category::all();
-            $categoryName = Category::where('id', $id)->first();
-            // Return the view with the products, categories, and the selected category ID
-        } else {
-
-
-
-            // For non-POST requests (GET or other types), show the products without search/filtering
-            // Base query for products
-            $query = products::with([
-                'category',
-                'type',
-                'orderItems',
-                'shoppingCart',
-                'productItems',
-                'productImages'
-            ])
-                ->where('is_active', 1)
-                ->whereHas('category', function ($query) {
-                    $query->where('is_active', 1);
-                })
-                ->whereHas('type', function ($query) {
-                    $query->where('is_active', 1);
-                });
-
-            // 🔹 If category ID is provided, apply category filter
-            if ($id) {
-                $query->where('category_id', $id);
-            }
-
-            // 🔹 Sort so that is_highest = 1 appears first, then newest products
-            $data = $query->orderByDesc('is_highest')
-                ->orderByDesc('name')
-                ->paginate(10);
-
-            // 🔹 Load categories and category name
-            $categories = Category::all();
-            $categoryName = Category::find($id);
-
+        // Apply category filter
+        if ($id) {
+            $query->where('category_id', $id);
         }
 
-        return view('product.list', compact('data', 'categories', 'id', 'categoryName'));
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Apply type filter
+        if ($type_id) {
+            $query->where('type_id', $type_id);
+        }
+
+        // Apply color filter
+        if ($color) {
+            $query->where('color', $color);
+        }
+
+        // Apply price range filter
+        if ($minPrice !== null && $minPrice !== '') {
+            $query->where('price', '>=', $minPrice);
+        }
+        if ($maxPrice !== null && $maxPrice !== '') {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        // Apply size filter
+        if ($size) {
+            $query->whereHas('productItems', function ($q) use ($size) {
+                $q->where('size', $size);
+            });
+        }
+
+        // Apply stock status filter
+        if ($stock_status) {
+            if ($stock_status === 'in_stock') {
+                $query->whereHas('productItems', function ($q) {
+                    $q->where('quantity', '>', 0);
+                });
+            } elseif ($stock_status === 'out_of_stock') {
+                $query->where(function ($q) {
+                    $q->whereDoesntHave('productItems')
+                      ->orWhereHas('productItems', function ($q2) {
+                          $q2->where('quantity', '<=', 0);
+                      });
+                });
+            }
+        }
+
+        // Build query string for pagination links
+        $queryParams = [
+            'search' => $search,
+            'type_id' => $type_id,
+            'color' => $color,
+            'size' => $size,
+            'min_price' => $minPrice,
+            'max_price' => $maxPrice,
+            'stock_status' => $stock_status
+        ];
+
+        // Sort and paginate
+        $data = $query->orderByDesc('is_highest')
+            ->orderByDesc('created_at')
+            ->paginate(30)
+            ->appends($queryParams);
+
+        // Fetch all categories and filter options for the view
+        $categories = Category::all();
+        $types = Type::all();
+        $colors = products::distinct()->pluck('color')->filter()->values();
+        $sizes = productItems::distinct()->pluck('size')->filter()->values();
+        $maxProductPrice = products::max('price');
+        $categoryName = Category::find($id);
+
+
+        return view('product.list', compact('data', 'categories', 'types', 'colors', 'sizes', 'maxProductPrice', 'id', 'categoryName', 'search', 'type_id', 'color', 'size', 'minPrice', 'maxPrice', 'stock_status'));
     }
 
     public function productWebShow($id)
@@ -298,7 +382,7 @@ class ProductController extends Controller
     public function deleteImage($id)
     {
         // Call the deleteRecord function from the trait
-        $isDeleted = self::deletePerImage($this->assocatationImage, $id, true);
+        $isDeleted = self::deletePerImage($this->assocatationImage, $id);
 
         // Handle the flash message based on the result
         if ($isDeleted) {

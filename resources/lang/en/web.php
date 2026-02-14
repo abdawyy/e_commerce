@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 return [
   'title' => 'Hayah - Modern Modest Fashion',
   'description' => 'Shop trendy modest clothing from Hayah.',
@@ -53,6 +53,10 @@ return [
   'login_to_review' => 'Login to add a review',
   'submit_review' => 'Submit Review',
   'no_reviews_yet' => 'No reviews yet.',
+  'price' => 'Price',
+  'min_price' => 'Min Price',
+  'max_price' => 'Max Price',
+  'stock' => 'Stock',
 
 
 
@@ -60,3 +64,4 @@ return [
 
 
 ];
+
