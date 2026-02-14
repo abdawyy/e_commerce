@@ -16,7 +16,7 @@
 <aside id="sidebar"
     class="sidebar pt-5"
     dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}"
-    style="width: 280px; height: 100vh; background: #fff; overflow-y: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); z-index: 999;">
+    style="width: 280px; height: 100vh; background: #fff; overflow-y: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); z-index: 1000;">
 
     <ul class="sidebar-nav {{ app()->getLocale() === 'ar' ? 'text-end pe-3' : 'text-start ps-3' }}" id="sidebar-nav">
 

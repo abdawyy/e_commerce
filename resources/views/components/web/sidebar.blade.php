@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="z-index: 1000;">
     <div class="offcanvas-header">
         <a class="navbar-brand" href="/">
             <img src="{{ asset('assets/img/logo.png') }}" alt="Hayah Logo" style="width: 160px; height: 80px">

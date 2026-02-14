@@ -42,7 +42,7 @@
         .promo-bar { background: var(--brand-dark); color: #fff; font-size: 0.75rem; text-align: center; padding: 8px 0; text-transform: uppercase; letter-spacing: 1px; }
 
         /* Navbar & Dropdown Fixes */
-        .navbar-custom { background: var(--glass-bg); border-bottom: 1px solid #eee; z-index: 1050; }
+        .navbar-custom { background: var(--glass-bg); border-bottom: 1px solid #eee;  }
         
         .nav-link { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: var(--brand-dark) !important; cursor: pointer; }
 
