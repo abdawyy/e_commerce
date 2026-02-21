@@ -146,6 +146,15 @@
                     </div>
                 </li>
             </ul>
+
+            <!-- Language Switcher -->
+            <div class="mt-4 pt-3 border-top">
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url('/lang/en') }}" class="text-decoration-none fw-bold {{ app()->getLocale() == 'en' ? 'text-dark' : 'text-muted' }}">EN</a>
+                    <span class="text-muted">|</span>
+                    <a href="{{ url('/lang/ar') }}" class="text-decoration-none fw-bold {{ app()->getLocale() == 'ar' ? 'text-dark' : 'text-muted' }}">AR</a>
+                </div>
+            </div>
         </div>
     </div>
 
