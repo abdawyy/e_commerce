@@ -135,5 +135,30 @@
     </div>
 </section>
 
+@php
+    $pixelContents = collect($cartItems ?? [])->map(function ($item) {
+        $product = is_object($item) && isset($item->product) ? $item->product : null;
+        $productId = $product->id ?? (is_array($item) ? ($item['product_id'] ?? null) : null);
+        $quantity = is_object($item) ? ($item->quantity ?? 1) : ($item['quantity'] ?? 1);
+
+        return [
+            'id' => (string) $productId,
+            'quantity' => (int) $quantity,
+        ];
+    })->filter(fn ($row) => !empty($row['id']))->values();
+@endphp
+
+<script>
+    if (typeof fbq === 'function') {
+        fbq('track', 'InitiateCheckout', {
+            content_ids: @json($pixelContents->pluck('id')->values()),
+            contents: @json($pixelContents),
+            content_type: 'product',
+            value: {{ (float) ($total ?? $subtotal ?? 0) }},
+            currency: 'EGP',
+            num_items: {{ (int) $pixelContents->sum('quantity') }}
+        });
+    }
+</script>
 
 <x-web.footer />

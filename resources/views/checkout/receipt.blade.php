@@ -56,4 +56,15 @@
     }
 </style>
 
+<script>
+    if (typeof fbq === 'function') {
+        fbq('track', 'Purchase', {
+            value: {{ (float) $totalPrice }},
+            currency: 'EGP',
+            content_type: 'product',
+            order_id: '{{ $orderID }}'
+        });
+    }
+</script>
+
 <x-web.footer />

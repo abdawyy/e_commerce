@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css">
 
+    <x-web.meta-pixel />
+
     <style>
         :root { --brand-black: #111111; --soft-bg: #f8f9fa; }
         body { font-family: 'Inter', sans-serif; background-color: #fff; color: var(--brand-black); }

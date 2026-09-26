@@ -250,6 +250,23 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+    @php
+        $pixelUnitPrice = $product->sale
+            ? ($product->price - ($product->price * $product->sale / 100))
+            : $product->price;
+    @endphp
+
+    /* Meta Pixel — ViewContent */
+    if (typeof fbq === 'function') {
+        fbq('track', 'ViewContent', {
+            content_ids: ['{{ $product->id }}'],
+            content_name: @json($product->name),
+            content_type: 'product',
+            value: {{ (float) $pixelUnitPrice }},
+            currency: 'EGP'
+        });
+    }
+
     /* Image Gallery Logic */
     function changeMainImage(img) {
         document.getElementById('mainImage').src = img.src;
@@ -296,13 +313,16 @@
             return;
         }
 
+        const quantity = parseInt($('#quantity').val(), 10) || 1;
+        const unitPrice = {{ (float) $pixelUnitPrice }};
+
         fetch('/cart/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
             body: JSON.stringify({
                 product_id: productId,
                 size_id: selectedSize,
-                quantity: parseInt($('#quantity').val(), 10)
+                quantity: quantity
             })
         })
             .then(async (res) => {
@@ -317,6 +337,16 @@
                     $('.cart-Notify, .cart-count').text(data.cartCount);
                     if (window.toastr) {
                         toastr.success(data.message || "Added to cart.");
+                    }
+                    if (typeof fbq === 'function') {
+                        fbq('track', 'AddToCart', {
+                            content_ids: [String(productId)],
+                            content_name: @json($product->name),
+                            content_type: 'product',
+                            contents: [{ id: String(productId), quantity: quantity }],
+                            value: unitPrice * quantity,
+                            currency: 'EGP'
+                        });
                     }
                 } else if (data.redirect) {
                     window.location.href = data.redirect;
